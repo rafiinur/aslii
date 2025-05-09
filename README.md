@@ -2,7 +2,9 @@
 
 Pertama, clone repository ini lalu buka terminal di repository:
 ```bash
-git clone https://github.com/username/nama-repo.git
+git clone https://github.com/rafiinur/aslii.git
+# atau
+git@github.com:rafiinur/aslii.git
 # lalu
 cd nama-repo
 ```
