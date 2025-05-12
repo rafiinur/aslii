@@ -27,22 +27,32 @@ export const login = async (email: string, password: string) => {
       throw new Error(errorMessage);
     }
 
-    const access_token = data?.user?.auth?.access_token;
+    const accessToken = data?.user?.auth?.access_token;
+    const refreshToken = data?.user?.auth?.refresh_token;
     const userDetails = data?.user;
 
     // Validasi respons: token dan user harus ada
-    if (!access_token || !userDetails) {
+    if (!accessToken || !userDetails || !refreshToken) {
+      // Jika tidak ada token, lempar error
       throw new Error("Respons tidak valid dari server autentikasi.");
     }
 
     // Simpan token ke cookie yang aman dan hanya dapat diakses server
     const cookieStore = await cookies();
-    cookieStore.set("token", access_token, {
+    cookieStore.set("access-token", accessToken, {
       httpOnly: true, // Tidak bisa diakses via JavaScript
       secure: process.env.NODE_ENV === "production", // Hanya dikirim via HTTPS di production
       path: "/", // Berlaku di seluruh app
       sameSite: "lax", // Changed from strict to lax for better compatibility
       maxAge: 60 * 60 * 24, // Berlaku selama 1 hari
+    });
+
+    // Simpan refresh token ke cookie yang aman dan hanya dapat diakses server
+    cookieStore.set("refresh-token", refreshToken, {
+      httpOnly: true, // Tidak bisa diakses via JavaScript
+      secure: process.env.NODE_ENV === "production", // Hanya dikirim via HTTPS di production
+      path: "/", // Berlaku di seluruh app
+      sameSite: "lax", // Changed from strict to lax for better compatibility
     });
 
     return data;
@@ -59,9 +69,9 @@ export const login = async (email: string, password: string) => {
 export const logout = async () => {
   // Ambil token dari cookie
   const cookieStore = await cookies();
-  const token = cookieStore.get("token")?.value;
+  const accessToken = cookieStore.get("access-token")?.value;
 
-  if (!token) {
+  if (!accessToken) {
     throw new Error("No token found. User is not logged in.");
   }
 
@@ -71,7 +81,7 @@ export const logout = async () => {
       method: "POST",
       headers: {
         // ⚠️ Gunakan token user untuk autentikasi logout, bukan hanya anon key
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${accessToken}`,
       },
     }
   );
@@ -82,7 +92,8 @@ export const logout = async () => {
   }
 
   // Hapus cookie hanya setelah logout berhasil
-  cookieStore.delete("token");
+  cookieStore.delete("access-token");
+  cookieStore.delete("refresh-token");
 
   return await res.json();
 };

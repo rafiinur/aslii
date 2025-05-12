@@ -17,17 +17,11 @@ import {
   Settings,
 } from "lucide-react";
 import { getCurrentUser } from "@/lib/supabase/auth";
-
-// Simulasi response dari API
-const profile = {
-  company_name: "Tech Solutions Inc.",
-  division: "IT Support",
-  role: "System Specialist",
-};
+import { getCompanyById } from "@/lib/supabase/company";
 
 const ProfilePage = async () => {
-  const profiles = await getCurrentUser();
-  console.log(profiles);
+  const user = await getCurrentUser();
+  const company = await getCompanyById(user.profile.m_company_id);
 
   return (
     <div className="flex flex-1 flex-col gap-4 pt-4">
@@ -39,11 +33,11 @@ const ProfilePage = async () => {
             <div className="relative group">
               <Avatar className="h-24 w-24 border-4 border-background">
                 <AvatarImage
-                  src={profiles.profile.m_user_profile_picture || ""}
-                  alt={profiles.profile.m_user_profile_nama_lengkap}
+                  src={user.profile.m_user_profile_picture || ""}
+                  alt={user.profile.m_user_profile_nama_lengkap}
                 />
                 <AvatarFallback className="text-2xl bg-primary text-primary-foreground">
-                  {profiles.profile.m_user_profile_nama_lengkap
+                  {user.profile.m_user_profile_nama_lengkap
                     .slice(0, 2)
                     .toUpperCase()}
                 </AvatarFallback>
@@ -60,29 +54,32 @@ const ProfilePage = async () => {
             <div className="flex-1 space-y-2">
               <div className="flex flex-wrap items-center gap-2">
                 <CardTitle className="text-2xl font-bold">
-                  {profiles.profile.m_user_profile_nama_lengkap}
+                  {user.profile.m_user_profile_nama_lengkap}
                 </CardTitle>
-                <Badge variant="secondary" className="ml-2">
-                  {profile.role}
-                </Badge>
+                {user.roles.map((role) => (
+                  <Badge key={role.r_role_id} variant="outline">
+                    {role.r_role_nama}
+                  </Badge>
+                ))}
+
                 <Badge variant="outline" className="bg-primary/10">
-                  {profile.division}
+                  {user.roles[0].m_divisi_nama}
                 </Badge>
               </div>
 
               <div className="text-muted-foreground flex items-center gap-2">
                 <Building className="h-4 w-4" />
-                {profile.company_name}
+                {company?.m_company_nama}
               </div>
 
               <div className="flex flex-wrap gap-4 text-sm text-muted-foreground pt-2">
                 <div className="flex items-center">
                   <Phone className="h-4 w-4 mr-2" />
-                  {profiles.profile.m_user_profile_nomor_telepon}
+                  {user.profile.m_user_profile_nomor_telepon}
                 </div>
                 <div className="flex items-center">
                   <Mail className="h-4 w-4 mr-2" />
-                  {profiles.email}
+                  {user.email}
                 </div>
               </div>
             </div>
@@ -113,7 +110,7 @@ const ProfilePage = async () => {
                       </Label>
                       <div className="flex justify-between items-center">
                         <span className="text-sm" id="email">
-                          {profiles.email}
+                          {user.email}
                         </span>
                       </div>
                     </div>
@@ -126,7 +123,7 @@ const ProfilePage = async () => {
                       </Label>
                       <div className="flex justify-between items-center">
                         <span className="text-sm" id="phone">
-                          {profiles.profile.m_user_profile_nomor_telepon}
+                          {user.profile.m_user_profile_nomor_telepon}
                         </span>
                         <Badge
                           variant="outline"
@@ -146,7 +143,7 @@ const ProfilePage = async () => {
                       <div className="flex items-center gap-2">
                         <MapPin className="h-4 w-4 text-muted-foreground" />
                         <span className="text-sm" id="address">
-                          {profiles.profile.m_user_profile_alamat}
+                          {user.profile.m_user_profile_alamat}
                         </span>
                       </div>
                     </div>
@@ -167,7 +164,7 @@ const ProfilePage = async () => {
                         Company Name
                       </Label>
                       <span className="text-sm block" id="company">
-                        {profile.company_name}
+                        {company?.m_company_nama}
                       </span>
                     </div>
 
@@ -178,7 +175,7 @@ const ProfilePage = async () => {
                         Division
                       </Label>
                       <span className="text-sm block" id="division">
-                        {profile.division}
+                        {user.roles[0].m_divisi_nama}
                       </span>
                     </div>
 
@@ -188,9 +185,11 @@ const ProfilePage = async () => {
                       <Label htmlFor="role" className="text-sm font-medium">
                         Role
                       </Label>
-                      <span className="text-sm block" id="role">
-                        {profile.role}
-                      </span>
+                      {user.roles.map((role) => (
+                        <Badge key={role.r_role_id} variant="outline">
+                          {role.r_role_nama}
+                        </Badge>
+                      ))}
                     </div>
                   </CardContent>
                 </Card>

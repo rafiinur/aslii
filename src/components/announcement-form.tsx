@@ -1,0 +1,245 @@
+"use client";
+
+import { Button } from "./ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { toast } from "sonner";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { createAnnouncement } from "@/actions/announcement";
+import { AnnouncementType } from "@/types/announcement";
+
+// Form validation schema
+const announcementSchema = z
+  .object({
+    t_pengumuman_judul: z.string().min(1, "Judul harus diisi"),
+    t_pengumuman_konten: z.string().min(10, "Deskripsi minimal 10 karakter"),
+    t_pengumuman_tanggal_publish: z
+      .string()
+      .min(1, "Tanggal mulai harus diisi"),
+    t_pengumuman_tanggal_kedaluwarsa: z
+      .string()
+      .min(1, "Tanggal berakhir harus diisi"),
+    t_pengumuman_is_active: z.string().min(1, "Status harus dipilih"),
+    t_pengumuman_target_audience: z.string().min(1, "Target harus dipilih"),
+    t_pengumuman_require_acknowledgement: z.boolean().default(false),
+  })
+  .refine(
+    (data) => {
+      const start = new Date(data.t_pengumuman_tanggal_publish);
+      const end = new Date(data.t_pengumuman_tanggal_kedaluwarsa);
+      return start <= end;
+    },
+    {
+      message: "Tanggal berakhir harus setelah tanggal mulai",
+      path: ["t_pengumuman_tanggal_kedaluwarsa"],
+    }
+  );
+
+// Component prop types
+interface AnnouncementFormProps {
+  setOpen: (open: boolean) => void;
+}
+
+const AnnouncementForm = ({ setOpen }: AnnouncementFormProps) => {
+  const form = useForm({
+    resolver: zodResolver(announcementSchema),
+    defaultValues: {
+      t_pengumuman_judul: "",
+      t_pengumuman_konten: "",
+      t_pengumuman_tanggal_publish: "",
+      t_pengumuman_tanggal_kedaluwarsa: "",
+      t_pengumuman_is_active: "",
+      t_pengumuman_target_audience: "",
+      t_pengumuman_require_acknowledgement: false,
+    },
+  });
+
+  const handleCreateAnnouncement = async (data: AnnouncementType) => {
+    try {
+      const announcement = await createAnnouncement(data);
+
+      if (!announcement) {
+        toast.error("Gagal membuat pengumuman");
+        return;
+      }
+
+      // Show success toast
+      toast("Pengumuman berhasil dibuat", {
+        description: "Pengumuman telah ditambahkan.",
+        action: {
+          label: "Undo",
+          onClick: () => console.log("Undo"),
+        },
+      });
+
+      form.reset();
+      setOpen(false);
+    } catch (err) {
+      console.error("Error saat submit form", err);
+    }
+  };
+
+  const handleCancel = () => {
+    form.reset();
+    setOpen(false);
+  };
+
+  return (
+    <Form {...form}>
+      <form
+        onSubmit={form.handleSubmit(handleCreateAnnouncement)}
+        className="space-y-3"
+      >
+        {/* Title field */}
+        <FormField
+          control={form.control}
+          name="t_pengumuman_judul"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-base">Judul</FormLabel>
+              <FormControl>
+                <Input placeholder="Masukkan judul pengumuman" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {/* Description field */}
+        <FormField
+          control={form.control}
+          name="t_pengumuman_konten"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-base">Deskripsi</FormLabel>
+              <FormControl>
+                <Textarea
+                  placeholder="Masukkan deskripsi lengkap pengumuman"
+                  className="min-h-32 resize-none"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {/* Date fields - arranged in grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <FormField
+            control={form.control}
+            name="t_pengumuman_tanggal_publish"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-base">Tanggal Mulai</FormLabel>
+                <FormControl>
+                  <Input type="date" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="t_pengumuman_tanggal_kedaluwarsa"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-base">Tanggal Berakhir</FormLabel>
+                <FormControl>
+                  <Input type="date" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+
+        {/* Status and Target fields - arranged in grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <FormField
+            control={form.control}
+            name="t_pengumuman_is_active"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-base">Status</FormLabel>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Pilih status" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value="aktif">Aktif</SelectItem>
+                    <SelectItem value="nonaktif">Non Aktif</SelectItem>
+                    <SelectItem value="diarsipkan">Draft</SelectItem>
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="t_pengumuman_target_audience"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-base">Target</FormLabel>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Pilih target" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value="all">Semua Pengguna</SelectItem>
+                    <SelectItem value="student">Siswa</SelectItem>
+                    <SelectItem value="teacher">Guru</SelectItem>
+                    <SelectItem value="staff">Staff</SelectItem>
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+
+        {/* Form action buttons */}
+        <div className="flex justify-end gap-2 pt-4">
+          <Button variant="outline" type="button" onClick={handleCancel}>
+            Batal
+          </Button>
+          <Button type="submit">Tambah</Button>
+        </div>
+      </form>
+    </Form>
+  );
+};
+
+export default AnnouncementForm;
