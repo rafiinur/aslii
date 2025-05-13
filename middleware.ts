@@ -1,5 +1,5 @@
 import { type NextRequest } from "next/server";
-import { updateSession } from "@/lib/supabase/middleware";
+import { updateSession } from "@/lib/middleware";
 
 export async function middleware(request: NextRequest) {
   console.log("Root middleware called for path:", request.nextUrl.pathname);

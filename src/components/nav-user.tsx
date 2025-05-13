@@ -1,6 +1,6 @@
 "use client";
 
-import { Bell, LogOut, User } from "lucide-react";
+import { BadgeHelp, Bell, LogOut, Settings, User } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -57,6 +57,14 @@ export function NavUser() {
               Profile
             </DropdownMenuItem>
           </Link>
+          <DropdownMenuItem>
+            <Settings />
+            Settings
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <BadgeHelp />
+            Help
+          </DropdownMenuItem>
           <DropdownMenuItem>
             <Bell />
             Notifications

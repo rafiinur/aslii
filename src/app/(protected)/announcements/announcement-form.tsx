@@ -1,12 +1,11 @@
 "use client";
 
-import { Button } from "./ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 
 import {
   Form,
@@ -24,35 +23,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+
 import { createAnnouncement } from "@/actions/announcement";
 import { AnnouncementType } from "@/types/announcement";
+import { announcementSchema } from "@/lib/schema";
 
-// Form validation schema
-const announcementSchema = z
-  .object({
-    t_pengumuman_judul: z.string().min(1, "Judul harus diisi"),
-    t_pengumuman_konten: z.string().min(10, "Deskripsi minimal 10 karakter"),
-    t_pengumuman_tanggal_publish: z
-      .string()
-      .min(1, "Tanggal mulai harus diisi"),
-    t_pengumuman_tanggal_kedaluwarsa: z
-      .string()
-      .min(1, "Tanggal berakhir harus diisi"),
-    t_pengumuman_is_active: z.string().min(1, "Status harus dipilih"),
-    t_pengumuman_target_audience: z.string().min(1, "Target harus dipilih"),
-    t_pengumuman_require_acknowledgement: z.boolean().default(false),
-  })
-  .refine(
-    (data) => {
-      const start = new Date(data.t_pengumuman_tanggal_publish);
-      const end = new Date(data.t_pengumuman_tanggal_kedaluwarsa);
-      return start <= end;
-    },
-    {
-      message: "Tanggal berakhir harus setelah tanggal mulai",
-      path: ["t_pengumuman_tanggal_kedaluwarsa"],
-    }
-  );
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 // Component prop types
 interface AnnouncementFormProps {
@@ -60,6 +36,15 @@ interface AnnouncementFormProps {
 }
 
 const AnnouncementForm = ({ setOpen }: AnnouncementFormProps) => {
+  const queryClient = useQueryClient();
+
+  const { mutateAsync: createAnnouncementMutate } = useMutation({
+    mutationFn: createAnnouncement,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["announcements"] });
+    },
+  });
+
   const form = useForm({
     resolver: zodResolver(announcementSchema),
     defaultValues: {
@@ -73,28 +58,19 @@ const AnnouncementForm = ({ setOpen }: AnnouncementFormProps) => {
     },
   });
 
-  const handleCreateAnnouncement = async (data: AnnouncementType) => {
+  const handleCreateAnnouncement = async (
+    data: Omit<AnnouncementType, "t_pengumuman_id">
+  ) => {
     try {
-      const announcement = await createAnnouncement(data);
-
-      if (!announcement) {
-        toast.error("Gagal membuat pengumuman");
-        return;
-      }
-
-      // Show success toast
+      await createAnnouncementMutate(data as AnnouncementType);
       toast("Pengumuman berhasil dibuat", {
         description: "Pengumuman telah ditambahkan.",
-        action: {
-          label: "Undo",
-          onClick: () => console.log("Undo"),
-        },
       });
-
       form.reset();
       setOpen(false);
     } catch (err) {
-      console.error("Error saat submit form", err);
+      toast.error("Gagal menambahkan pengumuman.");
+      console.error(err);
     }
   };
 

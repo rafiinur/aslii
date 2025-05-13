@@ -1,4 +1,4 @@
-import { createClient } from "./server";
+import { createClient } from "./supabase/server";
 
 export const getCompanyById = async (companyId: string) => {
   const supabase = await createClient();

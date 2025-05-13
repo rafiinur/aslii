@@ -6,4 +6,5 @@ export type AnnouncementType = {
   t_pengumuman_tanggal_kedaluwarsa: string;
   t_pengumuman_is_active: string;
   t_pengumuman_target_audience: string;
+  t_pengumuman_require_acknowledgement: boolean;
 };

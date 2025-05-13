@@ -1,8 +1,7 @@
 import { AppSidebar } from "@/components/app-sidebar";
 import { NavUser } from "@/components/nav-user";
-import SearchInput from "@/components/search-input";
-import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
+import SearchInput from "@/components/search-input";
 import { Separator } from "@/components/ui/separator";
 
 import {
@@ -41,7 +40,7 @@ export default function Page({ children }: React.PropsWithChildren) {
                 <span className="absolute top-1 right-1 w-2 h-2 bg-primary rounded-full"></span>
                 <Bell />
               </Button>
-              <ThemeToggle />
+
               <NavUser />
             </div>
           </div>

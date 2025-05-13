@@ -16,8 +16,8 @@ import {
   ShieldCheck,
   Settings,
 } from "lucide-react";
-import { getCurrentUser } from "@/lib/supabase/auth";
-import { getCompanyById } from "@/lib/supabase/company";
+import { getCurrentUser } from "@/lib/auth";
+import { getCompanyById } from "@/lib/company";
 
 const ProfilePage = async () => {
   const user = await getCurrentUser();

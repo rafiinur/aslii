@@ -1,7 +1,7 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
-import { getCurrentUser } from "@/lib/supabase/auth";
+import { getCurrentUser } from "@/lib/auth";
 import { AnnouncementType } from "@/types/announcement";
 
 export const createAnnouncement = async ({
@@ -38,7 +38,7 @@ export const createAnnouncement = async ({
       .select();
 
     if (error) {
-      console.error("Error creating announcement:", error);
+      throw error;
     }
 
     return data;

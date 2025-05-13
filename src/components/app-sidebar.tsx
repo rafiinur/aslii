@@ -9,9 +9,6 @@ import {
   HomeIcon,
   ChartBar,
   FileText,
-  Settings,
-  BadgeHelp,
-  LogOut,
 } from "lucide-react";
 
 import { NavMain } from "@/components/nav-main";
@@ -23,8 +20,9 @@ import {
   SidebarFooter,
   SidebarHeader,
 } from "@/components/ui/sidebar";
-import { NavSecondary } from "./nav-secondary";
+
 import { Separator } from "./ui/separator";
+import { ThemeToggle } from "./theme-toggle";
 
 // This is sample data.
 const data = {
@@ -68,23 +66,6 @@ const data = {
       icon: FileText,
     },
   ],
-  navSecondary: [
-    {
-      title: "Pengaturan",
-      url: "#",
-      icon: Settings,
-    },
-    {
-      title: "Bantuan",
-      url: "#",
-      icon: BadgeHelp,
-    },
-    {
-      title: "Keluar",
-      url: "#",
-      icon: LogOut,
-    },
-  ],
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
@@ -97,9 +78,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarContent>
         <NavMain items={data.navMain} />
       </SidebarContent>
-      <SidebarFooter>
-        <NavSecondary items={data.navSecondary} />
-      </SidebarFooter>
+      <SidebarFooter></SidebarFooter>
     </Sidebar>
   );
 }

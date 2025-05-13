@@ -1,5 +1,9 @@
 "use client";
 
+import { useState } from "react";
+import { Plus } from "lucide-react";
+import AnnouncementForm from "./announcement-form";
+
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -8,12 +12,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Plus } from "lucide-react";
-import { useState } from "react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import AnnouncementForm from "./announcement-form";
 
-export default function AddAnnouncementDialog() {
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
+export default function CreateAnnouncementDialog() {
   const [open, setOpen] = useState(false);
 
   return (
