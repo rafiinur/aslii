@@ -40,7 +40,7 @@ const leaderboardData = [
 
 const LeaderboardCard = () => {
   return (
-    <Card>
+    <Card className="py-2">
       <CardContent>
         <Table>
           <TableHeader>

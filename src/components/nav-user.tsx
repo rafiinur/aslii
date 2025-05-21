@@ -13,8 +13,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useSidebar } from "@/components/ui/sidebar";
-import { logout } from "@/actions/auth";
 import Link from "next/link";
+import LogoutForm from "./logout-form";
 
 export function NavUser() {
   const { isMobile } = useSidebar();
@@ -71,14 +71,9 @@ export function NavUser() {
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <form action={logout} className="w-full">
-          <button type="submit" className="flex w-full items-center">
-            <DropdownMenuItem>
-              <LogOut />
-              Log out
-            </DropdownMenuItem>
-          </button>
-        </form>
+        <DropdownMenuItem>
+          <LogoutForm />
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

@@ -1,4 +1,3 @@
-// hooks/use-announcement.ts
 import { createClient } from "@/lib/supabase/client";
 import { UserProfileResponse } from "@/types/user";
 import { useQuery } from "@tanstack/react-query";

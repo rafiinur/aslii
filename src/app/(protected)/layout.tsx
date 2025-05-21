@@ -45,7 +45,9 @@ export default function Page({ children }: React.PropsWithChildren) {
             </div>
           </div>
         </header>
-        <div className="flex-1 overflow-auto px-8">{children}</div>
+        <div className="flex-1 overflow-auto px-8 h-[calc(100vh-4rem)]">
+          {children}
+        </div>
       </SidebarInset>
     </SidebarProvider>
   );

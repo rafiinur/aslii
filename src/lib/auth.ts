@@ -3,7 +3,7 @@ import { cookies } from "next/headers";
 
 export async function getAuthToken() {
   const cookieStore = await cookies();
-  return cookieStore.get("access-token")?.value;
+  return cookieStore.get("sb-access-token")?.value;
 }
 
 export async function getCurrentUser() {

@@ -1,5 +1,7 @@
+// src/actions/auth.ts
 "use server";
 
+import { createClient } from "@/lib/supabase/server";
 import { cookies } from "next/headers";
 
 export const login = async (email: string, password: string) => {
@@ -9,91 +11,102 @@ export const login = async (email: string, password: string) => {
       {
         method: "POST",
         headers: {
-          // Kirim token Supabase sebagai Bearer untuk otorisasi API
           Authorization: `Bearer ${process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ email, password }),
-        cache: "no-store", // Hindari caching respons autentikasi
+        cache: "no-store",
       }
     );
 
     const data = await res.json();
 
-    // Tangani error dari API berdasarkan isi body
     if (!res.ok) {
-      const errorMessage =
-        data?.error?.message || "Login gagal. Terjadi kesalahan tidak dikenal.";
-      throw new Error(errorMessage);
+      throw new Error("Login gagal.");
     }
 
     const accessToken = data?.user?.auth?.access_token;
     const refreshToken = data?.user?.auth?.refresh_token;
-    const userDetails = data?.user;
 
-    // Validasi respons: token dan user harus ada
-    if (!accessToken || !userDetails || !refreshToken) {
-      // Jika tidak ada token, lempar error
-      throw new Error("Respons tidak valid dari server autentikasi.");
+    if (!accessToken || !refreshToken) {
+      throw new Error("Token tidak valid.");
     }
 
-    // Simpan token ke cookie yang aman dan hanya dapat diakses server
     const cookieStore = await cookies();
-    cookieStore.set("access-token", accessToken, {
-      httpOnly: true, // Tidak bisa diakses via JavaScript
-      secure: process.env.NODE_ENV === "production", // Hanya dikirim via HTTPS di production
-      path: "/", // Berlaku di seluruh app
-      sameSite: "lax", // Changed from strict to lax for better compatibility
-      maxAge: 60 * 60 * 24, // Berlaku selama 1 hari
+    const supabase = await createClient();
+
+    // Set Supabase session (akan otomatis mengatur cookie sb-* kalau pakai helper)
+    await supabase.auth.setSession({
+      access_token: accessToken,
+      refresh_token: refreshToken,
     });
 
-    // Simpan refresh token ke cookie yang aman dan hanya dapat diakses server
-    cookieStore.set("refresh-token", refreshToken, {
-      httpOnly: true, // Tidak bisa diakses via JavaScript
-      secure: process.env.NODE_ENV === "production", // Hanya dikirim via HTTPS di production
-      path: "/", // Berlaku di seluruh app
-      sameSite: "lax", // Changed from strict to lax for better compatibility
+    // Optional: custom set cookie HttpOnly (manual override, kalau mau)
+    cookieStore.set("sb-access-token", accessToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      path: "/",
+      maxAge: 60 * 60 * 24, // 1 day
     });
 
-    return data;
+    cookieStore.set("sb-refresh-token", refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      path: "/",
+      maxAge: 60 * 60 * 24 * 7, // 7 days
+    });
   } catch (err) {
-    // Lempar ulang error agar bisa ditampilkan di UI
-    if (err instanceof Error) {
-      throw new Error(err.message || "Terjadi kesalahan saat login.");
-    } else {
-      throw new Error("Terjadi kesalahan saat login.");
-    }
+    console.error("Login error:", err);
+    throw new Error("Login gagal. Silakan coba lagi.");
   }
 };
 
 export const logout = async () => {
-  // Ambil token dari cookie
   const cookieStore = await cookies();
-  const accessToken = cookieStore.get("access-token")?.value;
+  const accessToken = cookieStore.get("sb-access-token")?.value;
+  const refreshToken = cookieStore.get("sb-refresh-token")?.value;
 
-  if (!accessToken) {
-    throw new Error("No token found. User is not logged in.");
+  if (!accessToken || !refreshToken) {
+    throw new Error("Token tidak ditemukan.");
   }
 
+  // 🔁 Custom API logout (misal revoke token di backend kamu)
   const res = await fetch(
     `${process.env.SUPABASE_AUTH_API_URL}/auth-manage-user/logout`,
     {
       method: "POST",
       headers: {
-        // ⚠️ Gunakan token user untuk autentikasi logout, bukan hanya anon key
         Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
       },
+      body: JSON.stringify({ refresh_token: refreshToken }), // Kalau butuh
     }
   );
 
-  // Jika logout gagal, lempar error
   if (!res.ok) {
-    throw new Error("Logout failed. Please try again.");
+    const errData = await res.json().catch(() => ({}));
+    throw new Error(errData?.error?.message || "Gagal logout dari server.");
   }
 
-  // Hapus cookie hanya setelah logout berhasil
-  cookieStore.delete("access-token");
-  cookieStore.delete("refresh-token");
+  // ⛔ Clear session dari Supabase SDK (biar cookie Supabase juga bersih)
+  const supabase = await createClient();
+  await supabase.auth.signOut();
 
-  return await res.json();
+  cookieStore.set("sb-access-token", "", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+    path: "/",
+    maxAge: 0,
+  });
+
+  cookieStore.set("sb-refresh-token", "", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+    path: "/",
+    maxAge: 0,
+  });
 };

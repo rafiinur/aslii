@@ -6,7 +6,7 @@ const AnnouncementPage = async () => {
   const user = await getCurrentUser();
 
   if (!user) {
-    return <div>User not found</div>; // Menangani user yang tidak ditemukan
+    return <div>User not found</div>;
   }
 
   return (
@@ -15,7 +15,7 @@ const AnnouncementPage = async () => {
         <h4 className="font-semibold text-lg">List Pengumuman</h4>
         <CreateAnnouncementDialog />
       </div>
-      {/* Mengoper data user ke AnnouncementTableWrapper */}
+
       <AnnouncementTableWrapper user={user} />
     </div>
   );

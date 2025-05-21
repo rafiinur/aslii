@@ -21,6 +21,7 @@ import { getCompanyById } from "@/lib/company";
 
 const ProfilePage = async () => {
   const user = await getCurrentUser();
+  console.log(user);
   const company = await getCompanyById(user.profile.m_company_id);
 
   return (

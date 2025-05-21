@@ -2,6 +2,8 @@ import { AnnouncementCarousel } from "@/components/announcement-carousel";
 import { AttendanceChart } from "@/components/attendance-chart";
 import LeaderboardCard from "@/components/leaderboard-card";
 import SummarizeCard from "@/components/summarize-card";
+import { createClient } from "@/lib/supabase/server";
+
 import Link from "next/link";
 
 const dashboardSums = [
@@ -34,7 +36,7 @@ export default async function DashboardPage() {
         <div className="md:col-span-3 flex flex-col">
           <div className="flex items-center justify-between mb-2.5">
             <h4 className="text-lg font-semibold">Tinjauan Kehadiran Harian</h4>
-            <span className="font-medium text-muted-foreground">
+            <span className="text-sm text-muted-foreground">
               10 - 14 Maret 2025
             </span>
           </div>

@@ -2,8 +2,6 @@ import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
 export async function updateSession(request: NextRequest) {
-  console.log("Supabase middleware called for path:", request.nextUrl.pathname);
-
   let supabaseResponse = NextResponse.next({
     request,
   });
@@ -41,21 +39,43 @@ export async function updateSession(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  console.log(
-    "User authentication status:",
-    user ? "Authenticated" : "Not authenticated"
+  const protectedRoutes = [
+    "/dashboard",
+    "/announcements",
+    "/employees",
+    "/documents",
+    "/leaderboard",
+    "/profile",
+    "/projects",
+  ];
+
+  const publicRoutes = ["/login", "/reset-password", "/forget-password"];
+  const dashboardUrl = new URL("/dashboard", request.url);
+  const loginUrl = new URL("/login", request.url);
+
+  const isPublicRoute = publicRoutes.some((route) =>
+    request.nextUrl.pathname.startsWith(route)
   );
 
-  if (
-    !user &&
-    !request.nextUrl.pathname.startsWith("/login") &&
-    !request.nextUrl.pathname.startsWith("/auth")
-  ) {
-    console.log("Redirecting to login page");
-    // no user, potentially respond by redirecting the user to the login page
-    const url = request.nextUrl.clone();
-    url.pathname = "/login";
-    return NextResponse.redirect(url);
+  const isProtectedRoute = protectedRoutes.some((route) =>
+    request.nextUrl.pathname.startsWith(route)
+  );
+
+  // If the user is not logged in and is trying to access a protected route,
+  // redirect them to the login page.
+  if (!user && isProtectedRoute) {
+    return NextResponse.redirect(loginUrl);
+  }
+
+  // If the user is logged in and is trying to access the login page,
+  // redirect them to the dashboard.
+
+  if (user && isPublicRoute) {
+    return NextResponse.redirect(dashboardUrl);
+  }
+
+  if (user && request.nextUrl.pathname === "/") {
+    return NextResponse.redirect(dashboardUrl);
   }
 
   // IMPORTANT: You *must* return the supabaseResponse object as it is.
