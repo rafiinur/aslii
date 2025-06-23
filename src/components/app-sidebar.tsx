@@ -65,6 +65,11 @@ const data = {
       url: "/documents",
       icon: FileText,
     },
+    {
+      title: "Asset",
+      url: "/assets",
+      icon: FileText,
+    },
   ],
 };
 
