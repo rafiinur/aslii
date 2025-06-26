@@ -67,7 +67,7 @@ const data = {
     },
     {
       title: "Asset",
-      url: "/assets",
+      url: "/asset",
       icon: FileText,
     },
   ],

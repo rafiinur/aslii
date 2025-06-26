@@ -2,7 +2,6 @@ import { AnnouncementCarousel } from "@/components/announcement-carousel";
 import { AttendanceChart } from "@/components/attendance-chart";
 import LeaderboardCard from "@/components/leaderboard-card";
 import SummarizeCard from "@/components/summarize-card";
-import { createClient } from "@/lib/supabase/server";
 
 import Link from "next/link";
 
