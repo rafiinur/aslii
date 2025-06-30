@@ -9,6 +9,11 @@ import {
   HomeIcon,
   ChartBar,
   FileText,
+  Workflow,
+  Building2,
+  KeyRound,
+  Box,
+  UserLock,
 } from "lucide-react";
 
 import { NavMain } from "@/components/nav-main";
@@ -23,6 +28,7 @@ import {
 
 import { Separator } from "./ui/separator";
 import { ThemeToggle } from "./theme-toggle";
+import { useProfileStore } from "@/stores/use-profile-store";
 
 // This is sample data.
 const data = {
@@ -65,10 +71,47 @@ const data = {
       url: "/documents",
       icon: FileText,
     },
+    {
+      title: "Approval",
+      url: "/approval",
+      icon: Workflow,
+    },
+  ],
+  navSuper: [
+    {
+      title: "Dashboard",
+      url: "/super-dashboard",
+      icon: HomeIcon,
+      isActive: true,
+    },
+    {
+      title: "Company",
+      url: "/company",
+      icon: Building2,
+    },
+    {
+      title: "Module",
+      url: "/module",
+      icon: Box,
+    },
+    {
+      title: "Permission",
+      url: "/permission",
+      icon: KeyRound,
+    },
+    {
+      title: "Role",
+      url: "/role",
+      icon: UserLock,
+    },
   ],
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const { profile } = useProfileStore();
+
+  console.log("AppSidebar profile:", profile);
+
   return (
     <Sidebar collapsible="icon" {...props} className="relative shadow-md">
       <SidebarHeader>
@@ -76,7 +119,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <Separator />
       <SidebarContent>
-        <NavMain items={data.navMain} />
+        <NavMain
+          items={
+            profile?.m_user_profile_is_super ? data.navSuper : data.navMain
+          }
+        />
       </SidebarContent>
       <SidebarFooter>
         <ThemeToggle />

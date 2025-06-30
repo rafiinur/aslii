@@ -2,7 +2,6 @@ import { AnnouncementCarousel } from "@/components/announcement-carousel";
 import { AttendanceChart } from "@/components/attendance-chart";
 import LeaderboardCard from "@/components/leaderboard-card";
 import SummarizeCard from "@/components/summarize-card";
-import { createClient } from "@/lib/supabase/server";
 
 import Link from "next/link";
 
@@ -29,7 +28,7 @@ const dashboardSums = [
   },
 ];
 
-export default async function DashboardPage() {
+export default function DashboardPage() {
   return (
     <div className="flex flex-1 flex-col gap-6 py-4">
       <div className="grid auto-rows-min grid-cols-1 md:grid-cols-5 gap-6">

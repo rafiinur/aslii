@@ -16,12 +16,11 @@ import {
   ShieldCheck,
   Settings,
 } from "lucide-react";
-import { getCurrentUser } from "@/lib/auth";
-import { getCompanyById } from "@/lib/company";
+import { getUserProfile } from "@/features/auth/services/user.service";
+import { getCompanyById } from "@/features/company/services/company.service";
 
 const ProfilePage = async () => {
-  const user = await getCurrentUser();
-  console.log(user);
+  const user = await getUserProfile();
   const company = await getCompanyById(user.profile.m_company_id);
 
   return (
@@ -57,14 +56,14 @@ const ProfilePage = async () => {
                 <CardTitle className="text-2xl font-bold">
                   {user.profile.m_user_profile_nama_lengkap}
                 </CardTitle>
-                {user.roles.map((role) => (
+                {/* {user.roles.map((role) => (
                   <Badge key={role.r_role_id} variant="outline">
                     {role.r_role_nama}
                   </Badge>
-                ))}
+                ))} */}
 
                 <Badge variant="outline" className="bg-primary/10">
-                  {user.roles[0].m_divisi_nama}
+                  {/* {user.roles[0].m_divisi_nama} */}
                 </Badge>
               </div>
 
@@ -176,7 +175,7 @@ const ProfilePage = async () => {
                         Division
                       </Label>
                       <span className="text-sm block" id="division">
-                        {user.roles[0].m_divisi_nama}
+                        {/* {user.roles[0].m_divisi_nama} */}
                       </span>
                     </div>
 
@@ -186,11 +185,11 @@ const ProfilePage = async () => {
                       <Label htmlFor="role" className="text-sm font-medium">
                         Role
                       </Label>
-                      {user.roles.map((role) => (
+                      {/* {user.roles.map((role) => (
                         <Badge key={role.r_role_id} variant="outline">
                           {role.r_role_nama}
                         </Badge>
-                      ))}
+                      ))} */}
                     </div>
                   </CardContent>
                 </Card>
