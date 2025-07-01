@@ -1,4 +1,8 @@
+import React from "react";
 import { Button } from "@/components/ui/button";
+import { Camera, Pencil } from "lucide-react";
+import AssetsDialog from "./asets-dialog";
+import { DialogClose } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -8,33 +12,26 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Camera } from "lucide-react";
-import AssetsDialog from "./asets-dialog";
-import { DialogClose } from "@/components/ui/dialog";
 
-const AssetsTambahDialog = () => {
+const AssetsEditDialog = () => {
   const trigger = (
-    <Button className="bg-primary-300 text-primary-100 hover:bg-primary-400 transition">
-      + Tambah Asset
+    <Button className="cursor-pointer bg-warning-200 text-primary-100 hover:bg-primary-400 transition rounded h-6 w-6">
+      <Pencil fill="#FF9E10" className="text-warning-200" />
     </Button>
   );
 
   const footer = (
     <>
+      <Button variant="confirm">Simpan</Button>
       <DialogClose asChild>
-        <Button type="button" variant="cancel">
-          Batal
-        </Button>
+        <Button variant="cancel">Batal</Button>
       </DialogClose>
-      <Button type="submit" variant="confirm">
-        Tambah
-      </Button>
     </>
   );
 
   return (
-    <AssetsDialog trigger={trigger} title="Tambah Aset" footer={footer}>
-      <form className="grid grid-cols-2 gap-5 items-center">
+    <AssetsDialog title="Edit Asset" trigger={trigger} footer={footer}>
+      <div className="grid grid-cols-2 gap-5 items-center">
         <Label
           htmlFor="asset"
           className="bg-primary-100 border border-primary-300 h-full rounded-xl flex items-center justify-center"
@@ -45,7 +42,6 @@ const AssetsTambahDialog = () => {
           </div>
           <Input type="file" id="asset" className="sr-only" />
         </Label>
-
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 py-4">
           <div className="space-y-2">
             <Label htmlFor="namaAset">Nama Aset</Label>
@@ -123,9 +119,9 @@ const AssetsTambahDialog = () => {
             <Input id="pemeliharaan" type="date" />
           </div>
         </div>
-      </form>
+      </div>
     </AssetsDialog>
   );
 };
 
-export default AssetsTambahDialog;
+export default AssetsEditDialog;
