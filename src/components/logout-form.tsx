@@ -2,8 +2,9 @@
 
 import React from "react";
 import { useRouter } from "next/navigation";
-import { logout } from "@/actions/auth";
 import { Button } from "./ui/button";
+import { logout } from "@/features/auth/actions/auth.action";
+import { toast } from "sonner";
 
 export default function LogoutButton() {
   const router = useRouter();
@@ -13,7 +14,8 @@ export default function LogoutButton() {
       await logout();
       router.push("/login"); // redirect manually on client
     } catch {
-      alert("Logout gagal, coba lagi.");
+      toast.error("Failed to logout. Please try again.");
+      console.error("Logout failed");
     }
   };
 

@@ -11,11 +11,14 @@ import {
 } from "@/components/ui/sidebar";
 
 import { Bell } from "lucide-react";
+import { ClientOnly } from "@/providers/client-only";
 
-export default function Page({ children }: React.PropsWithChildren) {
+export default function ProtectedLayout({ children }: React.PropsWithChildren) {
   return (
     <SidebarProvider className="h-screen">
-      <AppSidebar />
+      <ClientOnly>
+        <AppSidebar />
+      </ClientOnly>
       <SidebarInset className="flex flex-col h-full">
         <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
           <div className="flex items-center justify-between px-8 w-full">
@@ -45,9 +48,7 @@ export default function Page({ children }: React.PropsWithChildren) {
             </div>
           </div>
         </header>
-        <div className="flex-1 overflow-auto px-8 h-[calc(100vh-4rem)]">
-          {children}
-        </div>
+        <div className="flex-1 overflow-auto px-8 py-4">{children}</div>
       </SidebarInset>
     </SidebarProvider>
   );

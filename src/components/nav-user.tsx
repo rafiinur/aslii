@@ -1,6 +1,6 @@
 "use client";
 
-import { BadgeHelp, Bell, LogOut, Settings, User } from "lucide-react";
+import { BadgeHelp, Bell, Settings, User } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {

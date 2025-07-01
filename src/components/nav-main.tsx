@@ -28,7 +28,7 @@ export function NavMain({
 
   return (
     <SidebarGroup>
-      <SidebarGroupLabel className="">GENERAL</SidebarGroupLabel>
+      <SidebarGroupLabel>GENERAL</SidebarGroupLabel>
       <SidebarMenu>
         {items.map((item) => (
           <SidebarMenuItem key={item.title}>
@@ -37,9 +37,9 @@ export function NavMain({
               tooltip={item.title}
               isActive={pathname === item.url}
             >
-              <a href={item.url}>
+              <a href={item.url} className="text-xs">
                 {item.icon && <item.icon />}
-                <span className="">{item.title}</span>
+                <span>{item.title}</span>
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>
