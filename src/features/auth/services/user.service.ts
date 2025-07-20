@@ -1,3 +1,4 @@
+import apiClient from "@/lib/api-client";
 import { createClient } from "@/lib/supabase/server";
 
 /**
@@ -161,4 +162,8 @@ export async function getAllRoles() {
     console.error("Error fetching roles:", error);
     throw new Error("Failed to fetch roles");
   }
+}
+
+export function getAllUsers() {
+  return apiClient("/auth-manage-user/users");
 }

@@ -1,5 +1,6 @@
+import { UserProfileResponse } from "@/features/auth/type";
 import { createClient } from "@/lib/supabase/client";
-import { UserProfileResponse } from "@/types/user";
+
 import { useQuery } from "@tanstack/react-query";
 
 export const useAnnouncements = (user: UserProfileResponse) => {

@@ -1,89 +1,37 @@
-import { getAuthToken } from "@/features/auth/services/user.service";
+import apiClient from "@/lib/api-client";
 
-export const getApprovalTemplates = async (
-  type: "leave_request" | "overtime"
-) => {
-  try {
-    const tokens = await getAuthToken();
+export const approval = {
+  leave: {
+    getLeaveApprovals: () =>
+      apiClient("/manage-attendance-leave/leave/admin/list"),
+    getLeaveTypes: () => apiClient("/manage-attendance-leave/leave/type"),
+    getLeaveBalanceByYear: (year: number) =>
+      apiClient(`/manage-attendance-leave/leave/admin/kuota?tahun=${year}`),
+  },
+  overtime: {
+    getOvertimeApprovals: () =>
+      apiClient("/manage-attendance-leave/overtime/admin/list"),
+    getOvertimeHistory: () =>
+      apiClient("/manage-attendance-leave/overtime/history"),
+    getOvertimeDetails: (overtimeId: number) =>
+      apiClient(
+        `/manage-attendance-leave/overtime/detail?t_overtime_id=${overtimeId}`
+      ),
+    getOvertimeStatistics: (month: string, year: number) =>
+      apiClient(
+        `/manage-attendance-leave/overtime/admin/stats?month=${month}&year=${year}`
+      ),
+  },
 
-    if (!tokens.accessToken) {
-      throw new Error("User is not authenticated");
-    }
+  getApprovalTemplates: (type: "leave_request" | "overtime") =>
+    apiClient(`/permission-checker/approval/template?type=${type}`),
+  getApprovalStatus: (workflowId: number) =>
+    apiClient(`/approval/status?workflow_id=${workflowId}`),
 
-    const res = await fetch(
-      `${process.env.SUPABASE_AUTH_API_URL}/permission-checker/approval/template?type=${type}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${tokens.accessToken}`,
-        },
-      }
-    );
-
-    console.log("Response status:", res);
-
-    return await res.json();
-  } catch (error) {
-    console.error("Error fetching approval templates:", error);
-    throw new Error("Failed to fetch approval templates");
-  }
+  getApprovalSteps: (workflowId: number) =>
+    apiClient(
+      `/permission-checker/approval/step-config?workflow_id=${workflowId}`
+    ),
+  getApprovalHistory: (workflowId: number) =>
+    apiClient(`/approval/history?workflow_id=${workflowId}`),
 };
-
-export const getApprovalStatus = async (workflowId: number) => {
-  try {
-    const tokens = await getAuthToken();
-
-    if (!tokens.accessToken) {
-      throw new Error("User is not authenticated");
-    }
-
-    const res = await fetch(
-      `${process.env.SUPABASE_AUTH_API_URL}/approval/status?workflow_id=${workflowId}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${tokens.accessToken}`,
-        },
-      }
-    );
-
-    console.log("Response status:", res);
-
-    return await res.json();
-  } catch (error) {
-    console.error("Error fetching approval status:", error);
-    throw new Error("Failed to fetch approval status");
-  }
-};
-
-export const getApprovalHistory = async (workflowId: number) => {
-  try {
-    const tokens = await getAuthToken();
-
-    if (!tokens.accessToken) {
-      throw new Error("User is not authenticated");
-    }
-
-    const res = await fetch(
-      `${process.env.SUPABASE_AUTH_API_URL}/approval/history?workflow_id=${workflowId}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${tokens.accessToken}`,
-        },
-      }
-    );
-
-    console.log("Response status:", res);
-
-    return await res.json();
-  } catch (error) {
-    console.error("Error fetching approval status:", error);
-    throw new Error("Failed to fetch approval status");
-  }
-};
-
-export const getApprovalSteps = async () => {};

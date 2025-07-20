@@ -3,12 +3,14 @@
 import { Bar, BarChart, XAxis, YAxis } from "recharts";
 
 import { Card, CardContent } from "@/components/ui/card";
+
 import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+
 const chartData = [
   { date: "2024-07-15", absent: 450, present: 300, total: 750 },
   { date: "2024-07-16", absent: 380, present: 420, total: 750 },

@@ -1,3 +1,5 @@
-export const getAllModules = async () => {};
+import apiClient from "@/lib/api-client";
 
-export const checkPermission = async (permission: string) => {};
+export const permissions = {
+  getAllPermissions: () => apiClient("/permission-checker/permission/all"),
+};
