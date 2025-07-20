@@ -1,6 +1,6 @@
 "use client";
 
-import * as React from "react";
+import { useEffect, useState } from "react";
 import {
   Layers,
   Users,
@@ -12,8 +12,9 @@ import {
   Workflow,
   Building2,
   KeyRound,
-  Box,
   UserLock,
+  BriefcaseBusiness,
+  BookOpen,
 } from "lucide-react";
 
 import { NavMain } from "@/components/nav-main";
@@ -27,8 +28,8 @@ import {
 } from "@/components/ui/sidebar";
 
 import { Separator } from "./ui/separator";
-import { ThemeToggle } from "./theme-toggle";
 import { useProfileStore } from "@/stores/use-profile-store";
+import { SidebarSkeleton } from "./sidebar-skeleton";
 
 // This is sample data.
 const data = {
@@ -39,26 +40,25 @@ const data = {
       plan: "Enterprise",
     },
   ],
-  navMain: [
+  navAdmin: [
     {
       title: "Dashboard",
       url: "/dashboard",
       icon: HomeIcon,
-      isActive: true,
     },
     {
       title: "Manajemen Karyawan",
-      url: "/employees",
+      url: "/employee",
       icon: Users,
     },
     {
       title: "Proyek",
-      url: "/projects",
+      url: "/project",
       icon: Layers,
     },
     {
       title: "Pengumuman",
-      url: "/announcements",
+      url: "/announcement",
       icon: Megaphone,
     },
     {
@@ -68,13 +68,26 @@ const data = {
     },
     {
       title: "Dokumen",
-      url: "/documents",
+      url: "/document",
       icon: FileText,
     },
     {
-      title: "Approval",
-      url: "/approval",
+      title: "Pengajuan",
       icon: Workflow,
+      items: [
+        {
+          title: "Cuti",
+          url: "/approval/leave",
+        },
+        {
+          title: "Lembur",
+          url: "/approval/overtime",
+        },
+        {
+          title: "Template",
+          url: "/approval/template",
+        },
+      ],
     },
   ],
   navSuper: [
@@ -90,9 +103,14 @@ const data = {
       icon: Building2,
     },
     {
+      title: "Divisi",
+      url: "/division",
+      icon: BriefcaseBusiness,
+    },
+    {
       title: "Module",
       url: "/module",
-      icon: Box,
+      icon: BookOpen,
     },
     {
       title: "Permission",
@@ -108,9 +126,20 @@ const data = {
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const [hasMounted, setHasMounted] = useState(false);
+
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
+
   const { profile } = useProfileStore();
 
-  console.log("AppSidebar profile:", profile);
+  if (!hasMounted) {
+    return <SidebarSkeleton {...props} />;
+  }
+
+  const isSuperAdmin = profile?.m_user_profile_is_super;
+  const navItems = isSuperAdmin ? data.navSuper : data.navAdmin;
 
   return (
     <Sidebar collapsible="icon" {...props} className="relative shadow-md">
@@ -119,15 +148,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <Separator />
       <SidebarContent>
-        <NavMain
-          items={
-            profile?.m_user_profile_is_super ? data.navSuper : data.navMain
-          }
-        />
+        <NavMain items={navItems} />
       </SidebarContent>
-      <SidebarFooter>
-        <ThemeToggle />
-      </SidebarFooter>
+      <SidebarFooter></SidebarFooter>
     </Sidebar>
   );
 }

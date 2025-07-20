@@ -1,7 +1,30 @@
-import React from "react";
+import { LinearLineChart } from "@/components/linear-line-chart";
+import SummarizeCard from "@/components/summarize-card";
 
-const SuperDashboardPage = () => {
-  return <div>SuperDashboardPage</div>;
-};
+const DUMMY_DATA = [
+  {
+    title: "Total Perusahaan",
+    amount: "50",
+  },
+  {
+    title: "Total User",
+    amount: "41",
+  },
+  {
+    title: "Modul Aktif",
+    amount: "2",
+  },
+];
 
-export default SuperDashboardPage;
+export default function SuperDashboardPage() {
+  return (
+    <div className="flex flex-1 flex-col gap-6">
+      <div className="grid auto-rows-min grid-cols-1 md:grid-cols-3 gap-6 min-h-0 flex-1">
+        {DUMMY_DATA.map((data) => (
+          <SummarizeCard key={data.title} {...data} orientation="vertical" />
+        ))}
+      </div>
+      <LinearLineChart />
+    </div>
+  );
+}

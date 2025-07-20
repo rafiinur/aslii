@@ -27,7 +27,7 @@ import {
 
 const SIDEBAR_COOKIE_NAME = "sidebar_state";
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7;
-const SIDEBAR_WIDTH = "16rem";
+const SIDEBAR_WIDTH = "13rem";
 const SIDEBAR_WIDTH_MOBILE = "15rem";
 const SIDEBAR_WIDTH_ICON = "3rem";
 const SIDEBAR_KEYBOARD_SHORTCUT = "b";
@@ -606,30 +606,25 @@ function SidebarMenuSkeleton({
 }: React.ComponentProps<"div"> & {
   showIcon?: boolean;
 }) {
+  const [width, setWidth] = React.useState("80%");
   // Random width between 50 to 90%.
-  const width = React.useMemo(() => {
-    return `${Math.floor(Math.random() * 40) + 50}%`;
+  React.useEffect(() => {
+    const randomWidth = `${Math.floor(Math.random() * 40) + 50}%`;
+    setWidth(randomWidth);
   }, []);
 
   return (
     <div
-      data-slot="sidebar-menu-skeleton"
-      data-sidebar="menu-skeleton"
       className={cn("flex h-8 items-center gap-2 rounded-md px-2", className)}
       {...props}
     >
-      {showIcon && (
-        <Skeleton
-          className="size-4 rounded-md"
-          data-sidebar="menu-skeleton-icon"
-        />
-      )}
+      {showIcon && <Skeleton className="size-4 shrink-0 rounded-md" />}
       <Skeleton
-        className="h-4 max-w-(--skeleton-width) flex-1"
-        data-sidebar="menu-skeleton-text"
+        className="h-4 flex-1"
         style={
           {
             "--skeleton-width": width,
+            maxWidth: `var(--skeleton-width)`,
           } as React.CSSProperties
         }
       />

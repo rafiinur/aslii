@@ -1,16 +1,21 @@
 import * as z from "zod";
 
-export const approvalTemplateSchema = z.object({
-  templateName: z.string().min(1, "Nama template tidak boleh kosong"),
+export const createApprovalTemplateFormSchema = z.object({
+  templateName: z
+    .string()
+    .min(3, { message: "Template name must be at least 3 characters." }),
+  templateType: z
+    .string({ required_error: "Please select a template type." })
+    .min(1, { message: "Please select a template type." }),
   steps: z
     .array(
       z.object({
-        order: z.number().int().positive("Urutan harus positif"),
-        approver_type: z.enum(["user", "role"], {
-          errorMap: () => ({ message: "Jenis approver tidak valid" }),
-        }),
-        approver_id: z.string().min(1, "ID approver tidak boleh kosong"),
+        approverType: z.string(),
+        approverId: z
+          .string()
+          .min(1, { message: "Please select an approver." }),
+        isMandatory: z.boolean(),
       })
     )
-    .min(1, "Minimal satu langkah diperlukan"),
+    .min(1, { message: "At least one approval step is required." }),
 });

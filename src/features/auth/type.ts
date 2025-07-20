@@ -1,3 +1,10 @@
+export type User = {
+  user_id: string;
+  email: string;
+  profile: UserProfile;
+  roles: UserRole[];
+};
+
 export type UserRole = {
   r_role_id: number;
   r_role_nama: string;
@@ -26,4 +33,9 @@ export type UserProfileResponse = {
   profile: UserProfile;
   roles: UserRole[];
   permissions: any[]; // Replace with specific type if you know the structure
+};
+
+export type Role = {
+  r_role_id: string;
+  r_role_nama: string;
 };
