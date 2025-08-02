@@ -2,30 +2,40 @@
 
 const nextConfig = {
   devIndicators: false,
+  images: {
+    domains: ['storage.googleapis.com'],
+  },
   webpack(config) {
-    // Grab the existing rule that handles SVG imports
-    const fileLoaderRule = config.module.rules.find((rule) =>
-      rule.test?.test?.(".svg")
+    // Temukan rule file loader untuk svg
+    const fileLoaderRule = config.module.rules.find(
+      (rule) =>
+        rule.test &&
+        typeof rule.test === 'object' &&
+        rule.test instanceof RegExp &&
+        rule.test.test('file.svg')
     );
 
+    if (!fileLoaderRule) {
+      throw new Error("Could not find existing SVG rule in webpack config.");
+    }
+
+    // Keluarkan svg dari rule tersebut
+    fileLoaderRule.exclude = /\.svg$/i;
+
+    // Tambahkan aturan baru untuk svg
     config.module.rules.push(
-      // Reapply the existing rule, but only for svg imports ending in ?url
       {
         ...fileLoaderRule,
         test: /\.svg$/i,
-        resourceQuery: /url/, // *.svg?url
+        resourceQuery: /url/, // svg?url
       },
-      // Convert all other *.svg imports to React components
       {
         test: /\.svg$/i,
         issuer: /\.[jt]sx?$/,
-        resourceQuery: { not: /url/ }, // exclude if *.svg?url
-        use: ["@svgr/webpack"],
+        resourceQuery: { not: /url/ },
+        use: ['@svgr/webpack'],
       }
     );
-
-    // Modify the file loader rule to ignore *.svg, since we have it handled now.
-    fileLoaderRule.exclude = /\.svg$/i;
 
     return config;
   },
