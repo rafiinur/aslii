@@ -42,7 +42,7 @@ export const columns: ColumnDef<ListProject>[] = [
     id: "actions",
     header: "",
     cell: () => (
-      <Link href="#">
+      <Link href={'/project/detail/1'}>
         <Button
           size={"icon"}
           className="cursor-pointer rounded-full"
