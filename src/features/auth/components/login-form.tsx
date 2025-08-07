@@ -25,7 +25,6 @@ export function LoginForm() {
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
   const loginAction = useAuthStore((state) => state.login);
-  const { userProfile } = useAuthStore();
 
   const form = useForm<z.infer<typeof loginFormSchema>>({
     resolver: zodResolver(loginFormSchema),
@@ -43,14 +42,11 @@ export function LoginForm() {
     try {
       const response = await login(credentials.email, credentials.password);
 
-      console.log("Login response:", response);
-
       if (response.success === false) {
         setError(response.message || "Email atau password salah.");
       } else {
         loginAction(response);
-        console.log("Login successful:", response);
-        console.log("User profile:", userProfile);
+
         router.push("/dashboard");
       }
     } catch (err) {

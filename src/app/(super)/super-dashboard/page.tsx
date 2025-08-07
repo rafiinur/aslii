@@ -18,7 +18,7 @@ const DUMMY_DATA = [
 
 export default function SuperDashboardPage() {
   return (
-    <div className="flex flex-1 flex-col gap-6">
+    <div className="flex flex-col gap-6 py-4 px-6">
       <div className="grid auto-rows-min grid-cols-1 md:grid-cols-3 gap-6 min-h-0 flex-1">
         {DUMMY_DATA.map((data) => (
           <SummarizeCard key={data.title} {...data} orientation="vertical" />

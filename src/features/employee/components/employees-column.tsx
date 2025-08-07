@@ -142,7 +142,7 @@ export const columns: ColumnDef<Employee>[] = [
       </div>
     ),
     cell: ({ row }) => (
-      <Link href={`/employees/detail/${row.getValue("user_id")}`}>
+      <Link href={`/employee/${row.getValue("user_id")}`}>
         <Button
           variant="outline"
           size="sm"

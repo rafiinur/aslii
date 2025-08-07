@@ -1,15 +1,7 @@
 import TaskStatusChart from "../../../../../components/task-status-chart";
 import JobListTable from "../../../../../features/project/components/detail/job-list-table";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
+
 import { Card, CardContent } from "@/components/ui/card";
-import { List } from "lucide-react";
 import TeamTable from "../../../../../features/project/components/detail/team-table";
 
 // Dummy data, ganti dengan fetch data jika sudah ada API
@@ -34,28 +26,15 @@ const project = {
 
 const ProjectDetailPage = () => {
   return (
-    <div className="flex flex-col flex-1 gap-3 py-4">
-      {/* Breadcrumb */}
-      <Breadcrumb>
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink href="/project">Proyek</BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbPage>Detail Proyek</BreadcrumbPage>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
-
+    <div className="flex flex-col flex-1 gap-3 py-4 px-6">
       {/* Informasi Proyek & Status Tugas */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="flex flex-col">
-            <h4 className="section-title mb-2">Informasi Proyek</h4>
-            {/* Informasi Proyek */}
-            <Card className="shadow-sm">
+          <h4 className="section-title mb-2">Informasi Proyek</h4>
+          {/* Informasi Proyek */}
+          <Card className="shadow-sm">
             <CardContent className="text-sm">
-                <div className="grid grid-cols-2 gap-y-2">
+              <div className="grid grid-cols-2 gap-y-2">
                 <div>Nama Proyek</div>
                 <div>: {project.nama}</div>
                 <div>Deskripsi</div>
@@ -68,30 +47,30 @@ const ProjectDetailPage = () => {
                 <div>: {project.selesai}</div>
                 <div>Status</div>
                 <div>: {project.status}</div>
-                </div>
+              </div>
             </CardContent>
-            </Card>
+          </Card>
         </div>
         <div className="flex flex-col">
-            <h4 className="section-title mb-2">Status Tugas</h4>
-            {/* Status Tugas */}
-            <TaskStatusChart></TaskStatusChart>
+          <h4 className="section-title mb-2">Status Tugas</h4>
+          {/* Status Tugas */}
+          <TaskStatusChart></TaskStatusChart>
         </div>
       </div>
 
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {/* Daftar Tugas */}
         <div className="md:col-span-2">
-            <h4 className="section-title mb-2">Daftar Tugas</h4>
-            <JobListTable />
+          <h4 className="section-title mb-2">Daftar Tugas</h4>
+          <JobListTable />
         </div>
 
         {/* Tim yang Terlibat */}
         <div>
-            <h4 className="section-title mb-2">Tim yang Terlibat</h4>
-            <TeamTable />
+          <h4 className="section-title mb-2">Tim yang Terlibat</h4>
+          <TeamTable />
         </div>
-    </div>
+      </div>
     </div>
   );
 };

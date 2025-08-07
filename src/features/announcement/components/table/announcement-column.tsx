@@ -3,13 +3,14 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { SortingButton } from "@/components/sorting-button";
 import { Badge } from "@/components/ui/badge";
-import { Edit, Trash2 } from "lucide-react";
+import { Edit, Eye, Trash2 } from "lucide-react";
 import { ActionsCell } from "@/components/actions-cell";
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import EditAnnouncementDialog from "../dialog/edit-announcement-dialog";
 import type { Announcement } from "@/features/announcement/type";
 import ConfirmAnnouncementDeleteDialog from "../dialog/confirm-announcement-delete-dialog";
 import { formatDate } from "@/lib/utils";
+import Link from "next/link";
 
 export const announcementColumns: ColumnDef<Announcement>[] = [
   {
@@ -120,6 +121,12 @@ export const announcementColumns: ColumnDef<Announcement>[] = [
         >
           {(openDialog) => (
             <>
+              <Link href={`/announcement/${announcement.t_pengumuman_id}`}>
+                <DropdownMenuItem onSelect={() => openDialog("edit")}>
+                  <Eye className="mr-2 h-4 w-4" />
+                  <span>Lihat Detail</span>
+                </DropdownMenuItem>
+              </Link>
               <DropdownMenuItem onSelect={() => openDialog("edit")}>
                 <Edit className="mr-2 h-4 w-4" />
                 <span>Edit Announcement</span>

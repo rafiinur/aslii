@@ -5,16 +5,18 @@ import React from "react";
 
 const ModulePage = () => {
   return (
-    <>
-      <div className="flex items-end justify-between gap-2 mb-4">
+    <div className="flex flex-col flex-1 px-6 py-4">
+      <div className="flex items-center justify-between gap-2 mb-4 flex-shrink-0">
         <div className="flex items-center gap-2">
           <Box className="h-5 w-5 text-muted-foreground" />
           <h2 className="text-lg font-semibold">Modul</h2>
         </div>
         <CreateModuleButton />
       </div>
-      <ModuleTable />
-    </>
+      <div className="flex-1 overflow-auto">
+        <ModuleTable />
+      </div>
+    </div>
   );
 };
 

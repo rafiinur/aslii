@@ -62,6 +62,7 @@ const ProfilePage = async () => {
 
                 <Badge variant="outline" className="bg-primary/10">
                   {/* {user.roles[0].m_divisi_nama} */}
+                  {data.profile.m_user_profile_divisi}
                 </Badge>
               </div>
 

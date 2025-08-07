@@ -1,5 +1,7 @@
 "use client";
 
+import { ChevronsRight } from "lucide-react";
+import Link from "next/link";
 import { useState } from "react";
 
 export default function RekapAbsensiPage() {
@@ -78,11 +80,17 @@ export default function RekapAbsensiPage() {
             <tr className="border-b border-gray-200 dark:border-[#2A2A2A]">
               <th className="p-3 text-gray-700 dark:text-gray-300">No</th>
               <th className="p-3 text-gray-700 dark:text-gray-300">Nama</th>
-              <th className="p-3 text-gray-700 dark:text-gray-300">Jam Masuk</th>
-              <th className="p-3 text-gray-700 dark:text-gray-300">Jam Keluar</th>
+              <th className="p-3 text-gray-700 dark:text-gray-300">
+                Jam Masuk
+              </th>
+              <th className="p-3 text-gray-700 dark:text-gray-300">
+                Jam Keluar
+              </th>
               <th className="p-3 text-gray-700 dark:text-gray-300">Lokasi</th>
               <th className="p-3 text-gray-700 dark:text-gray-300">Status</th>
-              <th className="p-3 text-gray-700 dark:text-gray-300">Keterangan</th>
+              <th className="p-3 text-gray-700 dark:text-gray-300">
+                Keterangan
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -95,30 +103,47 @@ export default function RekapAbsensiPage() {
                   key={row.no}
                   className="border-b border-gray-200 dark:border-[#2A2A2A] hover:bg-gray-50 dark:hover:bg-[#2A2A2A] transition-colors duration-300"
                 >
-                  <td className="p-3 text-gray-900 dark:text-gray-100">{row.no}</td>
-                  <td className="p-3 text-gray-900 dark:text-gray-100">{row.nama}</td>
+                  <td className="p-3 text-gray-900 dark:text-gray-100">
+                    {row.no}
+                  </td>
+                  <td className="p-3 text-gray-900 dark:text-gray-100">
+                    {row.nama}
+                  </td>
                   <td
                     className={`p-3 ${
-                      terlambat ? "text-red-500 font-medium" : "text-gray-900 dark:text-gray-100"
+                      terlambat
+                        ? "text-red-500 font-medium"
+                        : "text-gray-900 dark:text-gray-100"
                     }`}
                   >
                     {row.jamMasuk}
                   </td>
                   <td
                     className={`p-3 ${
-                      lembur ? "text-orange-500 font-medium" : "text-gray-900 dark:text-gray-100"
+                      lembur
+                        ? "text-orange-500 font-medium"
+                        : "text-gray-900 dark:text-gray-100"
                     }`}
                   >
                     {row.jamKeluar}
                   </td>
-                  <td className="p-3 text-gray-900 dark:text-gray-100">{row.lokasi}</td>
-                  <td className="p-3 text-gray-900 dark:text-gray-100">{row.status}</td>
                   <td className="p-3 text-gray-900 dark:text-gray-100">
-                  <div className="flex justify-between items-center w-full">
-                    <span>{row.keterangan}</span>
-                    <span className="text-lg ml-2 text-gray-400 dark:text-gray-500">»</span>
-                  </div>
-                </td>
+                    {row.lokasi}
+                  </td>
+                  <td className="p-3 text-gray-900 dark:text-gray-100">
+                    {row.status}
+                  </td>
+                  <td className="p-3 text-gray-900 dark:text-gray-100">
+                    <div className="flex justify-between items-center w-full">
+                      <span>{row.keterangan}</span>
+                      <Link
+                        className="text-lg ml-2 text-gray-400 dark:text-gray-500"
+                        href={`/attendance/${row.no}`}
+                      >
+                        <ChevronsRight />
+                      </Link>
+                    </div>
+                  </td>
                 </tr>
               );
             })}

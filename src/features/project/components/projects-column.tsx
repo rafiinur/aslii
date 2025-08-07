@@ -97,16 +97,18 @@ export const columns: ColumnDef<
   {
     id: "actions",
     header: () => <div className="text-center">Aksi</div>,
-    cell: ({ row }) => (
-      <Link href={`#`} className="text-end">
-        <Button
-          size={"icon"}
-          className="cursor-pointer rounded-full"
-          variant="link"
-        >
-          <ChevronsRight />
-        </Button>
-      </Link>
-    ),
+    cell: () => {
+      return (
+        <Link href={`/project/detail/1`} className="text-end">
+          <Button
+            size={"icon"}
+            className="cursor-pointer rounded-full"
+            variant="link"
+          >
+            <ChevronsRight />
+          </Button>
+        </Link>
+      );
+    },
   },
 ];

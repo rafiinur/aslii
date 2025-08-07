@@ -2,6 +2,7 @@ import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { User } from "lucide-react";
+import { NumberTicker } from "./magicui/number-ticker";
 
 type SummarizeCardProps = {
   title: string;
@@ -35,7 +36,11 @@ const SummarizeCard: React.FC<SummarizeCardProps> = ({
               : "flex-col justify-between gap-6"
           )}
         >
-          <h4 className="text-5xl font-semibold leading-none">{amount}</h4>
+          <NumberTicker
+            value={parseInt(amount)}
+            className="text-5xl font-semibold leading-none"
+          />
+
           {!!note && (
             <p className="font-medium text-xs md:text-sm text-muted-foreground whitespace-nowrap">
               {note}
