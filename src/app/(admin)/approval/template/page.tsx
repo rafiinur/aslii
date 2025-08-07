@@ -5,11 +5,10 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import React from "react";
-
 import Link from "next/link";
-import { CreateTemplateDialog } from "../../../../features/approval/components/dialog/create-template-dialog";
+// import { CreateTemplateDialog } from "../../../../features/approval/components/dialog/create-template-dialog";
 
-export const TemplateCard = () => {
+const TemplateCard = () => {
   return (
     <Card className="flex h-full flex-col">
       <CardHeader>
@@ -32,7 +31,7 @@ const ApprovalTemplatePage = async () => {
             Manage the approval workflows for different request types.
           </p>
         </div>
-        <CreateTemplateDialog />
+        {/* <CreateTemplateDialog /> */}
       </div>
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">

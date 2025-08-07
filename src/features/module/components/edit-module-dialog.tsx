@@ -8,7 +8,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import type { Module } from "../types";
-import EditModuleForm from "./edit-module-form";
+// import EditModuleForm from "./edit-module-form";
 
 interface EditModuleDialogProps {
   data: Module;
@@ -36,11 +36,11 @@ export function EditModuleDialog({
           </DialogDescription>
         </DialogHeader>
         <div className="py-4">
-          <EditModuleForm
+          {/* <EditModuleForm
             key={data.sys_module_id}
             module={data}
             onSuccess={() => onOpenChange(false)}
-          />
+          /> */}
         </div>
       </DialogContent>
     </Dialog>

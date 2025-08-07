@@ -22,13 +22,11 @@ const AssetsTambahDialog = () => {
   const footer = (
     <>
       <DialogClose asChild>
-        <Button type="button" variant="cancel">
+        <Button type="button" variant="outline">
           Batal
         </Button>
       </DialogClose>
-      <Button type="submit" variant="confirm">
-        Tambah
-      </Button>
+      <Button type="submit">Tambah</Button>
     </>
   );
 

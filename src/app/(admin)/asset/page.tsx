@@ -1,9 +1,9 @@
 "use client";
 
-import AssetTable from "./components/assets-table";
-import AssetsPinjamDialog from "./components/assets-pinjam-dialog";
-import AssetsTambahDialog from "./components/assets-tambah-dialog";
 import SummarizeCard from "@/components/summarize-card";
+import AssetsPinjamDialog from "@/features/asset/components/assets-pinjam-dialog";
+import AssetTable from "@/features/asset/components/assets-table";
+import AssetsTambahDialog from "@/features/asset/components/assets-tambah-dialog";
 
 const Page = () => {
   const assetSummary = [

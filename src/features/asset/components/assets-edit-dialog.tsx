@@ -22,9 +22,9 @@ const AssetsEditDialog = () => {
 
   const footer = (
     <>
-      <Button variant="confirm">Simpan</Button>
+      <Button>Simpan</Button>
       <DialogClose asChild>
-        <Button variant="cancel">Batal</Button>
+        <Button variant="outline">Batal</Button>
       </DialogClose>
     </>
   );

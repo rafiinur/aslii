@@ -18,8 +18,16 @@ interface AuthState {
   logout: () => void;
 }
 
+/**
+ * Definisikan tipe untuk state yang akan disimpan (dipersist).
+ * Kita menggunakan `Omit` untuk mengambil semua properti dari `AuthState`
+ * KECUALI fungsi 'login' dan 'logout'.
+ */
+type PersistedAuthState = Omit<AuthState, "login" | "logout">;
+
 export const useAuthStore = create(
-  persist<AuthState>(
+  // Berikan kedua tipe ke `persist`: tipe state penuh dan tipe state yang disimpan.
+  persist<AuthState, [], [], PersistedAuthState>(
     (set) => ({
       // State awal
       isLoggedIn: false,
@@ -32,8 +40,6 @@ export const useAuthStore = create(
       // Aksi untuk login
       login: (response: UserProfileResponse) => {
         const { auth, profile, roles, permission } = response.data.user;
-
-        // Set setiap bagian state secara eksplisit
         set({
           isLoggedIn: true,
           accessToken: auth.access_token,
@@ -46,7 +52,6 @@ export const useAuthStore = create(
 
       // Aksi untuk logout
       logout: () => {
-        // Reset semua state ke kondisi awal
         set({
           isLoggedIn: false,
           accessToken: null,
@@ -55,14 +60,12 @@ export const useAuthStore = create(
           roles: [],
           permissions: [],
         });
-        // Opsional: panggil API logout di sini
       },
     }),
     {
-      name: "auth-storage", // Nama untuk localStorage
-      // Opsional (tapi sangat direkomendasikan): Hanya simpan data yang perlu
-      // agar tidak menyimpan data temporary atau fungsi.
-      partialize: (state) => ({
+      name: "auth-storage",
+      // Fungsi `partialize` sekarang secara type-safe mengembalikan `PersistedAuthState`.
+      partialize: (state): PersistedAuthState => ({
         isLoggedIn: state.isLoggedIn,
         accessToken: state.accessToken,
         refreshToken: state.refreshToken,
