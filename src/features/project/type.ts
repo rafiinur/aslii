@@ -23,3 +23,16 @@ export type Task = {
   t_task_estimated_hours: number;
   t_task_tanggal_berakhir: string;
 };
+
+export type ListJob = {
+  nama_tugas: string;
+  penanggung_jawab: string;
+  tanggal_mulai: string;
+  tenggat: string;
+  status: "Tertunda" | "Berjalan" | "Selesai";
+};
+
+export type ListTeam = {
+  nama_anggota: string;
+  peran: string;
+}

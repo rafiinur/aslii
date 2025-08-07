@@ -27,8 +27,10 @@ export const login = async (email: string, password: string) => {
 
     console.log("Login berhasil:", result);
 
-    const accessToken = result?.result?.data?.user?.auth?.access_token;
-    const refreshToken = result?.result?.data?.user?.auth?.refresh_token;
+    console.log("Login berhasil:", result);
+
+    const accessToken = data?.user?.auth?.access_token;
+    const refreshToken = data?.user?.auth?.refresh_token;
 
     if (!accessToken || !refreshToken) {
       throw new Error("Token tidak valid.");
@@ -42,7 +44,7 @@ export const login = async (email: string, password: string) => {
       refresh_token: refreshToken,
     });
 
-    return result;
+    return data.user;
   } catch (err) {
     console.error("Login error:", err);
     return { success: false, message: "Login gagal. Silakan coba lagi." };
