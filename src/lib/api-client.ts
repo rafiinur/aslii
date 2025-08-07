@@ -1,5 +1,3 @@
-// src/lib/api-client.ts
-
 import { getAuthToken } from "@/features/auth/services/user.service";
 
 // Fungsi inti yang akan kita gunakan berulang kali

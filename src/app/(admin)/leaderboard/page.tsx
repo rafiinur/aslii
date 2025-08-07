@@ -12,7 +12,7 @@ import {
 
 const page = () => {
   return (
-    <div className="flex flex-col gap-5 pb-10">
+    <div className="flex flex-col gap-5 pb-10 px-6 py-4">
       <h4 className="font-semibold text-lg">Leaderboard Divisi</h4>
 
       <section className="flex flex-col lg:flex-row gap-8 h-max lg:h-72">

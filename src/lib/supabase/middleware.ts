@@ -56,10 +56,11 @@ export async function updateSession(request: NextRequest) {
     }
 
     if (isProtectedRoute || isSuperAdminRoute) {
-      const { profile } = await getUserProfile();
-      const isSuperAdminUser = profile?.m_user_profile_is_super ?? false;
+      const { data } = await getUserProfile();
+
+      const isSuperAdminUser = data.profile?.m_user_profile_is_super ?? false;
       const isCompanyAdminUser =
-        profile?.m_user_profile_is_company_admin ?? false;
+        data.profile?.m_user_profile_is_company_admin ?? false;
 
       // Jika mencoba mengakses rute Super Admin tetapi bukan Super Admin,
       if (isSuperAdminRoute && !isSuperAdminUser) {

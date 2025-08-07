@@ -27,7 +27,10 @@ export function CreateRoleButton() {
           Tambah Role
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-2xl max-h-[95vh] overflow-y-auto">
+      <DialogContent
+        className="sm:max-w-2xl max-h-[95vh] overflow-y-auto"
+        showCloseButton={false}
+      >
         <DialogHeader>
           <DialogTitle>Tambah Role Baru</DialogTitle>
           <DialogDescription>

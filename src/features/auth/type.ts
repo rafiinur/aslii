@@ -2,15 +2,13 @@ export type User = {
   user_id: string;
   email: string;
   profile: UserProfile;
-  roles: UserRole[];
 };
 
-export type UserRole = {
-  r_role_id: number;
-  r_role_nama: string;
-  m_divisi_id: number;
-  m_divisi_nama: string;
-  t_user_role_expires_at: string | null;
+export type UserAuth = {
+  user_id: string;
+  email: string;
+  access_token: string;
+  refresh_token: string;
 };
 
 export type UserProfile = {
@@ -28,14 +26,20 @@ export type UserProfile = {
 export type UserProfileResponse = {
   success: boolean;
   message: string;
-  user_id: string;
-  email: string;
-  profile: UserProfile;
-  roles: UserRole[];
-  permissions: any[]; // Replace with specific type if you know the structure
+  data: {
+    user: {
+      auth: UserAuth;
+      profile: UserProfile;
+      roles: Role[];
+      permission: string[];
+    };
+  };
 };
 
 export type Role = {
   r_role_id: string;
   r_role_nama: string;
+  m_divisi_id: string;
+  m_divisi_nama: string;
+  t_user_role_expires_at: string | null;
 };

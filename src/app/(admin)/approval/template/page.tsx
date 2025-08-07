@@ -8,7 +8,6 @@ import React from "react";
 
 import Link from "next/link";
 import { CreateTemplateDialog } from "../../../../features/approval/components/dialog/create-template-dialog";
-import { approval } from "@/features/approval/services/approval.service";
 
 export const TemplateCard = () => {
   return (
@@ -24,10 +23,8 @@ export const TemplateCard = () => {
 };
 
 const ApprovalTemplatePage = async () => {
-  const leaveTemplate = await approval.getApprovalTemplates("leave_request");
-
   return (
-    <div className="container mx-auto">
+    <div className="px-6 py-4">
       <div className="flex items-end justify-between mb-6">
         <div>
           <h2 className="section-title">Approval Templates</h2>

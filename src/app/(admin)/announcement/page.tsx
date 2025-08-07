@@ -1,17 +1,20 @@
-import { getUserProfile } from "@/features/auth/services/user.service";
-import AnnouncementTableWrapper from "../../../features/announcement/components/table/announcement-table-wrapper";
+import { CreateAnnouncementDialog } from "@/features/announcement/components/dialog/create-announcement-dialog";
+import AnnouncementTable from "@/features/announcement/components/table/announcement-table";
+import { Megaphone } from "lucide-react";
 
 const AnnouncementsPage = async () => {
-  const user = await getUserProfile();
-
-  if (!user) {
-    return <div>User not found</div>;
-  }
-
   return (
-    <div className="flex flex-1 flex-col py-4">
-      <h4 className="font-semibold text-lg mb-4">List Pengumuman</h4>
-      <AnnouncementTableWrapper user={user} />
+    <div className="flex flex-col flex-1 px-6 pb-4">
+      <div className="flex items-center justify-between gap-2 mb-4 flex-shrink-0">
+        <div className="flex items-center gap-2">
+          <Megaphone className="h-5 w-5 text-muted-foreground" />
+          <h2 className="section-title">Announcement</h2>
+        </div>
+        <CreateAnnouncementDialog />
+      </div>
+      <div className="flex-1 overflow-auto">
+        <AnnouncementTable />
+      </div>
     </div>
   );
 };

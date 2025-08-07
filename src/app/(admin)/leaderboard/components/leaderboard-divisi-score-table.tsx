@@ -8,33 +8,24 @@ import {
 } from "@/components/ui/table";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { divisi_data } from "../mock/divisi-score";
+import { Card } from "@/components/ui/card";
 
 const LeaderboardDivisiScoreTable = () => {
   return (
-    <div className="bg-white shadow-md shadow-neutral-200 p-5 lg:w-1/3 h-full rounded-2xl">
+    <Card className="shadow-md p-5 lg:w-1/3 h-full rounded-2xl">
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className="text-sm text-neutral-1000 leading-5">
-              No
-            </TableHead>
-            <TableHead className="text-sm text-neutral-1000 leading-5">
-              Divisi
-            </TableHead>
-            <TableHead className="text-sm text-neutral-1000 text-center">
-              Score
-            </TableHead>
+            <TableHead className="text-sm leading-5">No</TableHead>
+            <TableHead className="text-sm leading-5">Divisi</TableHead>
+            <TableHead className="text-sm text-center">Score</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {divisi_data.map((e, i) => (
             <TableRow key={i}>
-              <TableCell className="text-sm text-neutral-1000 leading-5">
-                {i + 1}
-              </TableCell>
-              <TableCell className="text-sm text-neutral-1000 leading-5">
-                {e.divisi}
-              </TableCell>
+              <TableCell className="text-sm leading-5">{i + 1}</TableCell>
+              <TableCell className="text-sm leading-5">{e.divisi}</TableCell>
               <TableCell>
                 <div className="flex items-center justify-end gap-5">
                   {e.score}
@@ -55,7 +46,7 @@ const LeaderboardDivisiScoreTable = () => {
           ))}
         </TableBody>
       </Table>
-    </div>
+    </Card>
   );
 };
 

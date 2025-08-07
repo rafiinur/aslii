@@ -110,7 +110,11 @@ export function CreateRoleForm({ onSuccess }: CreateRoleFormProps) {
           />
         </div>
 
-        <div className="flex justify-end pt-4">
+        <div className="flex justify-end pt-4 gap-2">
+          <Button variant="outline" onClick={onSuccess}>
+            Batal
+          </Button>
+
           <Button
             type="submit"
             disabled={isSubmitting}

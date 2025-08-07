@@ -15,21 +15,18 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-
 import { toast } from "sonner";
+
 import { FloatingLabelInput } from "@/components/floating-label-input";
 import { FloatingLabelTextarea } from "@/components/floating-label-textarea";
-import { useState } from "react";
 import { ModuleFormValues, moduleSchema } from "@/schemas/module-schema";
-import ApiEndpointsField from "./api-endpoints-field";
+import { Input } from "@/components/ui/input";
 
 interface CreateModuleFormProps {
   onSuccess?: () => void;
 }
 
 export function CreateModuleForm({ onSuccess }: CreateModuleFormProps) {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
   const form = useForm<ModuleFormValues>({
     resolver: zodResolver(moduleSchema),
     defaultValues: {
@@ -37,48 +34,86 @@ export function CreateModuleForm({ onSuccess }: CreateModuleFormProps) {
       description: "",
       code: "",
       version: "1.0.0",
-      apiEndpoints: [],
+      apiEndpoints: "",
       isSystemModule: false,
     },
   });
 
+  // Gunakan isSubmitting dari react-hook-form
+  const { isSubmitting } = form.formState;
+
   async function onSubmit(values: ModuleFormValues) {
-    setIsSubmitting(true);
     try {
+      // Konversi apiEndpoints dari string ke array
+      const processedValues = {
+        ...values,
+        apiEndpoints: values.apiEndpoints
+          .split(",")
+          .map((endpoint) => endpoint.trim())
+          .filter(Boolean)
+      };
+
+      // Simulasi panggilan API
       await new Promise((resolve) => setTimeout(resolve, 1500));
-      console.log("Data yang dikirim:", values);
+
+      console.log("Data yang dikirim:", processedValues);
       toast.success("Modul berhasil dibuat!");
       onSuccess?.();
-    } catch {
+    } catch (error) {
       toast.error("Gagal membuat modul.");
-    } finally {
-      setIsSubmitting(false);
+      console.error("Create failed:", error);
     }
   }
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <FloatingLabelInput id="name" label="Nama Modul" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <FormField
+            control={form.control}
+            name="name"
+            disabled={isSubmitting}
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <FloatingLabelInput
+                    id={field.name}
+                    label="Nama Modul"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="code"
+            disabled={isSubmitting}
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <FloatingLabelInput
+                    id={field.name}
+                    label="Kode Modul"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+
         <FormField
           control={form.control}
           name="description"
+          disabled={isSubmitting}
           render={({ field }) => (
             <FormItem>
               <FormControl>
                 <FloatingLabelTextarea
-                  id="description"
+                  id={field.name}
                   label="Deskripsi Singkat"
                   {...field}
                 />
@@ -87,58 +122,34 @@ export function CreateModuleForm({ onSuccess }: CreateModuleFormProps) {
             </FormItem>
           )}
         />
-        <div className="grid grid-cols-2 gap-x-6">
+
+        {/* --- Field API Endpoints dengan Input Tunggal --- */}
+        <div className="space-y-2">
+          <FormLabel htmlFor="apiEndpoints">API Endpoints</FormLabel>
+          <FormDescription>
+            Pisahkan beberapa endpoint dengan koma (,).
+          </FormDescription>
           <FormField
             control={form.control}
-            name="code"
+            name="apiEndpoints"
+            disabled={isSubmitting}
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <FloatingLabelInput id="code" label="Kode Modul" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="version"
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <FloatingLabelInput id="version" label="Versi" {...field} />
+                  <Input
+                    id={field.name}
+                    placeholder="Contoh: /api/v1/users, /api/v1/orders"
+                    value={field.value}
+                    onChange={(e) => {
+                      field.onChange(e.target.value);
+                    }}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
         </div>
-
-        {/* 👇 API Endpoints ala Postman */}
-        <FormField
-          control={form.control}
-          name="apiEndpoints"
-          render={({ field }) => (
-            <FormItem className="space-y-3">
-              <FormLabel className="text-sm font-medium">
-                API Endpoints
-              </FormLabel>
-              <FormControl>
-                <ApiEndpointsField
-                  value={
-                    Array.isArray(field.value) &&
-                    field.value.length > 0 &&
-                    typeof field.value[0] === "object"
-                      ? field.value
-                      : []
-                  }
-                  onChange={field.onChange}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
 
         <FormField
           control={form.control}
@@ -155,13 +166,17 @@ export function CreateModuleForm({ onSuccess }: CreateModuleFormProps) {
                 <Switch
                   checked={field.value}
                   onCheckedChange={field.onChange}
+                  disabled={isSubmitting}
                 />
               </FormControl>
             </FormItem>
           )}
         />
 
-        <div className="flex justify-end pt-4">
+        <div className="flex justify-end pt-4 gap-2">
+          <Button type="button" variant="outline" onClick={onSuccess}>
+            Batal
+          </Button>
           <Button
             type="submit"
             disabled={isSubmitting}

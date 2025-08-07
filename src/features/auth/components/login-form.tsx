@@ -17,14 +17,15 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { useProfileStore } from "@/stores/use-profile-store"; // Ditambahkan: Impor store Zustand
 import { loginFormSchema } from "@/schemas/login-form-schema";
 import { login } from "@/features/auth/actions/auth.action";
+import { useAuthStore } from "@/stores/use-auth-store";
 
 export function LoginForm() {
   const [error, setError] = useState<string | null>(null);
-  const { setProfile } = useProfileStore();
   const router = useRouter();
+  const loginAction = useAuthStore((state) => state.login);
+  const { userProfile } = useAuthStore();
 
   const form = useForm<z.infer<typeof loginFormSchema>>({
     resolver: zodResolver(loginFormSchema),
@@ -34,17 +35,24 @@ export function LoginForm() {
     },
   });
 
-  const handleSubmitLogin = async (data: {
+  const handleSubmitLogin = async (credentials: {
     email: string;
     password: string;
   }) => {
     setError(null);
     try {
-      const { profile } = await login(data.email, data.password);
+      const response = await login(credentials.email, credentials.password);
 
-      setProfile(profile);
+      console.log("Login response:", response);
 
-      router.push("/dashboard");
+      if (response.success === false) {
+        setError(response.message || "Email atau password salah.");
+      } else {
+        loginAction(response);
+        console.log("Login successful:", response);
+        console.log("User profile:", userProfile);
+        router.push("/dashboard");
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Login gagal. Coba lagi.");
     }

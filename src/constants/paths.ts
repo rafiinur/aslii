@@ -9,6 +9,7 @@ export const protectedRoutes = [
   "/reset-password",
   "/employees",
   "/leaderboard",
+  "/assets",
   "/profile",
   "/project",
 ];

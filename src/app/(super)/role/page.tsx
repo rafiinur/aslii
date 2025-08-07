@@ -5,7 +5,7 @@ import React from "react";
 
 const RolePermission = () => {
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col flex-1">
       <div className="flex items-center gap-2 mb-4 flex-shrink-0">
         <div className="flex items-center gap-2">
           <UserLock className="h-5 w-5 text-muted-foreground" />

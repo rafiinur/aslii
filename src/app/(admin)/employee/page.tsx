@@ -1,11 +1,9 @@
-import LeaveApplicationChart from "@/components/leave-application-chart";
-
+// import LeaveApplicationChart from "@/components/leave-application-chart";
 import SummarizeCard from "@/components/summarize-card";
-import TotalEmployeesChart from "@/components/total-employees-chart";
-import React from "react";
-import { ChevronsRight } from "lucide-react";
-import Link from "next/link";
+// import { ChevronsRight } from "lucide-react";
+// import Link from "next/link";
 import EmployeesTable from "@/features/employee/components/employees-table";
+import { TotalEmployeesPieChart } from "@/components/total-employees-pie-chart";
 
 const employeesSum = [
   {
@@ -32,7 +30,7 @@ const employeesSum = [
 
 const EmployeesPage = () => {
   return (
-    <div className="flex flex-1 flex-col gap-2">
+    <div className="flex flex-col gap-5 px-6 py-4">
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
         {employeesSum.map((employee) => (
           <SummarizeCard
@@ -42,31 +40,25 @@ const EmployeesPage = () => {
           />
         ))}
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-3 flex-1">
-        <div className="col-span-2 flex flex-col rounded-xl p-4">
-          <h4 className="section-title">List Karyawan</h4>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="col-span-3 flex flex-col">
+          <h4 className="section-title mb-2.5">List Karyawan</h4>
           <div className="flex-1 min-h-0">
             <EmployeesTable />
           </div>
         </div>
-        <div className="flex flex-col">
-          <div className="flex flex-col rounded-xl p-4 flex-1">
+        <div className="flex flex-col gap-3.75">
+          {/* <div className="flex flex-col">
             <div className="flex items-center justify-between">
-              <h4 className="section-title">Pengajuan Cuti</h4>
+              <h4 className="section-title mb-2.5">Pengajuan Cuti</h4>
               <Link href={"/employees/cuti"}>
                 <ChevronsRight />
               </Link>
             </div>
-            <div className="flex-1 min-h-0 flex items-center">
-              <LeaveApplicationChart />
-            </div>
-          </div>
-          <div className="flex flex-col rounded-xl p-4 flex-1">
-            <h4 className="font-semibold text-lg mb-2.5">Jumlah Karyawan</h4>
-            <div className="flex-1 min-h-0 flex items-center">
-              <TotalEmployeesChart />
-            </div>
-          </div>
+            <LeaveApplicationChart />
+          </div> */}
+
+          <TotalEmployeesPieChart />
         </div>
       </div>
     </div>

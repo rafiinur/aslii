@@ -27,7 +27,10 @@ export function CreatePermissionButton() {
           Tambah Permission
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-2xl max-h-[95vh] overflow-y-auto">
+      <DialogContent
+        className="sm:max-w-2xl max-h-[95vh] overflow-y-auto"
+        showCloseButton={false}
+      >
         <DialogHeader>
           <DialogTitle>Tambah Permission Baru</DialogTitle>
           <DialogDescription>

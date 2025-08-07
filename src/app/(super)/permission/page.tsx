@@ -3,7 +3,7 @@ import PermissionTable from "@/features/permission/components/table/permission-t
 import { KeyRound } from "lucide-react";
 import React from "react";
 
-const PermissionPage = () => {
+const PermissionPage = async () => {
   return (
     <>
       <div className="flex items-center gap-2 mb-4">

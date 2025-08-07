@@ -33,19 +33,15 @@ export async function isAuthenticated() {
  * Ambil data user dari API berdasarkan token.
  */
 export async function getUserProfile() {
-  const supabase = await createClient();
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
-
-  if (!session?.access_token) return null;
+  const { accessToken } = await getAuthToken();
+  if (!accessToken) return null;
 
   try {
     const res = await fetch(
       `${process.env.SUPABASE_AUTH_API_URL}/auth-manage-user/profile`,
       {
         headers: {
-          Authorization: `Bearer ${session.access_token}`,
+          Authorization: `Bearer ${accessToken}`,
         },
         cache: "no-store",
       }

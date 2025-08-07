@@ -5,8 +5,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+import { FloatingLabelInput } from "@/components/floating-label-input";
+import { FloatingLabelTextarea } from "@/components/floating-label-textarea";
 import { Switch } from "@/components/ui/switch";
 import {
   Form,
@@ -73,21 +73,14 @@ export function EditRoleForm({ role, onSuccess }: EditRoleFormProps) {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        <div className="mb-4 p-3 bg-gray-50 dark:bg-gray-900 rounded-lg">
-          <p className="text-sm text-gray-600 dark:text-gray-400">
-            <span className="font-medium">ID Role:</span> {role.r_role_id}
-          </p>
-        </div>
-
         <div className="grid grid-cols-1 gap-6">
           <FormField
             control={form.control}
             name="name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Nama Role</FormLabel>
                 <FormControl>
-                  <Input placeholder="Masukkan nama role" {...field} />
+                  <FloatingLabelInput id="name" label="Nama Role" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -99,9 +92,12 @@ export function EditRoleForm({ role, onSuccess }: EditRoleFormProps) {
             name="description"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Deskripsi</FormLabel>
                 <FormControl>
-                  <Textarea placeholder="Masukkan deskripsi role" {...field} />
+                  <FloatingLabelTextarea
+                    id="description"
+                    label="Deskripsi"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -116,16 +112,13 @@ export function EditRoleForm({ role, onSuccess }: EditRoleFormProps) {
                 <div className="space-y-0.5">
                   <FormLabel className="text-base">System Role</FormLabel>
                   <FormDescription>
-                    {role.r_role_is_system_role
-                      ? "Role sistem tidak dapat diubah statusnya"
-                      : "Tandai jika ini adalah role untuk modul sistem"}
+                    Tandai jika ini adalah role untuk modul sistem
                   </FormDescription>
                 </div>
                 <FormControl>
                   <Switch
                     checked={field.value}
                     onCheckedChange={field.onChange}
-                    disabled={role.r_role_is_system_role}
                   />
                 </FormControl>
               </FormItem>
@@ -133,13 +126,8 @@ export function EditRoleForm({ role, onSuccess }: EditRoleFormProps) {
           />
         </div>
 
-        <div className="flex justify-end gap-3 pt-4">
-          <Button
-            type="button"
-            variant="outline"
-            onClick={() => onSuccess?.()}
-            disabled={isSubmitting}
-          >
+        <div className="flex justify-end pt-4 gap-2">
+          <Button variant="outline" onClick={onSuccess}>
             Batal
           </Button>
           <Button
@@ -148,7 +136,7 @@ export function EditRoleForm({ role, onSuccess }: EditRoleFormProps) {
             className="w-full sm:w-auto"
           >
             {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            {isSubmitting ? "Menyimpan..." : "Simpan Perubahan"}
+            {isSubmitting ? "Menyimpan..." : "Simpan Role"}
           </Button>
         </div>
       </form>

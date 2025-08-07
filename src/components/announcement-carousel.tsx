@@ -3,7 +3,7 @@
 import * as React from "react";
 import Autoplay from "embla-carousel-autoplay";
 
-import { Card } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   Carousel,
   CarouselContent,
@@ -36,42 +36,50 @@ const announcementData = [
 
 export function AnnouncementCarousel() {
   const plugin = React.useRef(
-    Autoplay({ delay: 3000, stopOnInteraction: true })
+    Autoplay({ delay: 3000, stopOnInteraction: false })
   );
 
   return (
-    <Carousel
-      plugins={[plugin.current]}
-      onMouseEnter={plugin.current.stop}
-      onMouseLeave={plugin.current.reset}
-      className="relative"
-    >
-      <CarouselContent>
-        {announcementData.map((item, index) => (
-          <CarouselItem key={index}>
-            <Card className="py-0">
-              <div className="relative rounded-xl">
-                <Image
-                  width={500}
-                  height={500}
-                  src={`/img/${item.image}`}
-                  alt={item.title}
-                  className="w-full object-cover rounded-xl"
-                />
-                <div className="absolute inset-0 bg-black/50 flex flex-col justify-end p-4 rounded-xl">
-                  <span className="text-xs font-semibold text-white">
-                    {item.created_at}
-                  </span>
-                  <h5 className="font-semibold text-white">{item.title}</h5>
-                  <p className="text-xs text-white/80">{item.created_by}</p>
+    <Card className="p-0 h-full bg-transparent border-none">
+      <CardContent className="p-0 h-full">
+        <Carousel
+          plugins={[plugin.current]}
+          className="w-full h-full"
+          opts={{
+            align: "start",
+            loop: true,
+          }}
+        >
+          <CarouselContent className="h-full">
+            {announcementData.map((item, index) => (
+              <CarouselItem key={index} className="h-full">
+                <div className="h-full relative rounded-xl overflow-hidden min-h-[253px]">
+                  <Image
+                    src={`/img/${item.image}`}
+                    alt={item.title}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    priority={index === 0}
+                    unoptimized
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-blac k/70 via-black/20 to-transparent flex flex-col justify-end p-4">
+                    <span className="text-xs font-semibold text-white mb-1">
+                      {item.created_at}
+                    </span>
+                    <h5 className="font-semibold text-white mb-1 line-clamp-2">
+                      {item.title}
+                    </h5>
+                    <p className="text-xs text-white/80">{item.created_by}</p>
+                  </div>
                 </div>
-              </div>
-            </Card>
-          </CarouselItem>
-        ))}
-      </CarouselContent>
-      <CarouselPrevious className="absolute left-12 bottom-1/2 -translate-y-1/2" />
-      <CarouselNext className="absolute right-12 bottom-1/2 -translate-y-1/2" />
-    </Carousel>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious className="absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white" />
+          <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white" />
+        </Carousel>
+      </CardContent>
+    </Card>
   );
 }

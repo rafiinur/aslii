@@ -17,14 +17,12 @@ import {
   Settings,
 } from "lucide-react";
 import { getUserProfile } from "@/features/auth/services/user.service";
-import { getCompanyById } from "@/features/company/services/company.service";
 
 const ProfilePage = async () => {
-  const user = await getUserProfile();
-  const company = await getCompanyById(user.profile.m_company_id);
+  const { data } = await getUserProfile();
 
   return (
-    <div className="flex flex-1 flex-col gap-4 pt-4">
+    <div className="flex flex-1 flex-col gap-4 px-6 pb-4">
       {/* Profile Header */}
       <Card className="shadow-md">
         <CardHeader className="pb-2">
@@ -33,11 +31,11 @@ const ProfilePage = async () => {
             <div className="relative group">
               <Avatar className="h-24 w-24 border-4 border-background">
                 <AvatarImage
-                  src={user.profile.m_user_profile_picture || ""}
-                  alt={user.profile.m_user_profile_nama_lengkap}
+                  src={data.profile.m_user_profile_picture || ""}
+                  alt={data.profile.m_user_profile_nama_lengkap}
                 />
                 <AvatarFallback className="text-2xl bg-primary text-primary-foreground">
-                  {user.profile.m_user_profile_nama_lengkap
+                  {data.profile.m_user_profile_nama_lengkap
                     .slice(0, 2)
                     .toUpperCase()}
                 </AvatarFallback>
@@ -54,7 +52,7 @@ const ProfilePage = async () => {
             <div className="flex-1 space-y-2">
               <div className="flex flex-wrap items-center gap-2">
                 <CardTitle className="text-2xl font-bold">
-                  {user.profile.m_user_profile_nama_lengkap}
+                  {data.profile.m_user_profile_nama_lengkap}
                 </CardTitle>
                 {/* {user.roles.map((role) => (
                   <Badge key={role.r_role_id} variant="outline">
@@ -69,17 +67,17 @@ const ProfilePage = async () => {
 
               <div className="text-muted-foreground flex items-center gap-2">
                 <Building className="h-4 w-4" />
-                {company?.m_company_nama}
+                {/* {company?.m_company_nama} */}
               </div>
 
               <div className="flex flex-wrap gap-4 text-sm text-muted-foreground pt-2">
                 <div className="flex items-center">
                   <Phone className="h-4 w-4 mr-2" />
-                  {user.profile.m_user_profile_nomor_telepon}
+                  {data.profile.m_user_profile_nomor_telepon}
                 </div>
                 <div className="flex items-center">
                   <Mail className="h-4 w-4 mr-2" />
-                  {user.email}
+                  {data.email}
                 </div>
               </div>
             </div>
@@ -110,7 +108,7 @@ const ProfilePage = async () => {
                       </Label>
                       <div className="flex justify-between items-center">
                         <span className="text-sm" id="email">
-                          {user.email}
+                          {data.email}
                         </span>
                       </div>
                     </div>
@@ -123,7 +121,7 @@ const ProfilePage = async () => {
                       </Label>
                       <div className="flex justify-between items-center">
                         <span className="text-sm" id="phone">
-                          {user.profile.m_user_profile_nomor_telepon}
+                          {data.profile.m_user_profile_nomor_telepon}
                         </span>
                         <Badge
                           variant="outline"
@@ -143,7 +141,7 @@ const ProfilePage = async () => {
                       <div className="flex items-center gap-2">
                         <MapPin className="h-4 w-4 text-muted-foreground" />
                         <span className="text-sm" id="address">
-                          {user.profile.m_user_profile_alamat}
+                          {data.profile.m_user_profile_alamat}
                         </span>
                       </div>
                     </div>
@@ -164,7 +162,7 @@ const ProfilePage = async () => {
                         Company Name
                       </Label>
                       <span className="text-sm block" id="company">
-                        {company?.m_company_nama}
+                        {/* {company?.m_company_nama} */}
                       </span>
                     </div>
 

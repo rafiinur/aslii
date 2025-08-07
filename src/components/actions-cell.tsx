@@ -52,7 +52,7 @@ export function ActionsCell({ dialogs, children }: ActionsCellProps) {
               <MoreHorizontal className="h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-48">
+          <DropdownMenuContent align="end" className="w-fit">
             {children(openDialog)}
           </DropdownMenuContent>
         </DropdownMenu>

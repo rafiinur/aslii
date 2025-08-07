@@ -1,7 +1,7 @@
 import React from "react";
 
 const EditAnnouncementDialog = () => {
-  return <div>EditAnnouncementDialog</div>;
+  return <></>;
 };
 
 export default EditAnnouncementDialog;

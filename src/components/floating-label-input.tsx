@@ -24,7 +24,7 @@ const FloatingLabelInput = React.forwardRef<
         id={id}
         placeholder=" "
         className={cn(
-          "peer w-full h-12 pt-6 pb-2 px-4",
+          "peer w-full h-12 pt-7 pb-2 px-4",
           "transition-colors duration-200 ease-in-out",
           "focus:border-primary focus:ring-1 focus:ring-primary/20",
           "border-input bg-background"
@@ -36,9 +36,9 @@ const FloatingLabelInput = React.forwardRef<
         className={cn(
           "absolute left-4 text-sm text-muted-foreground pointer-events-none z-10",
           "transition-all duration-200 ease-out origin-top-left",
-          "top-3 scale-100",
-          "peer-focus:top-2 peer-focus:scale-75 peer-focus:text-primary peer-focus:font-medium",
-          "peer-[:not(:placeholder-shown)]:top-2 peer-[:not(:placeholder-shown)]:scale-75",
+          "top-3.5 scale-100",
+          "peer-focus:top-1.5 peer-focus:scale-75 peer-focus:text-primary peer-focus:font-medium",
+          "peer-[:not(:placeholder-shown)]:top-1.5 peer-[:not(:placeholder-shown)]:scale-75",
           "peer-[:not(:placeholder-shown)]:text-primary peer-[:not(:placeholder-shown)]:font-medium"
         )}
       >

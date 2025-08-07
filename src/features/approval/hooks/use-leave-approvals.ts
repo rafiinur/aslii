@@ -8,7 +8,7 @@ const fetchLeaveApprovals = async () => {
     throw new Error(errorData.message || "Gagal mengambil data dari server.");
   }
 
-  const data = await res.json();
+  const { data } = await res.json();
 
   return data.detail;
 };

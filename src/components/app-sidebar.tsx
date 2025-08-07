@@ -28,8 +28,9 @@ import {
 } from "@/components/ui/sidebar";
 
 import { Separator } from "./ui/separator";
-import { useProfileStore } from "@/stores/use-profile-store";
 import { SidebarSkeleton } from "./sidebar-skeleton";
+import { NavUser } from "./nav-user";
+import { useAuthStore } from "@/stores/use-auth-store";
 
 // This is sample data.
 const data = {
@@ -68,7 +69,7 @@ const data = {
     },
     {
       title: "Dokumen",
-      url: "/document",
+      url: "/documents",
       icon: FileText,
     },
     {
@@ -88,6 +89,11 @@ const data = {
           url: "/approval/template",
         },
       ],
+    },
+    {
+      title: "Asset",
+      url: "/asset",
+      icon: FileText,
     },
   ],
   navSuper: [
@@ -122,40 +128,41 @@ const data = {
       url: "/role",
       icon: UserLock,
     },
-    {
-      title: "Asset",
-      url: "/asset",
-      icon: FileText,
-    },
   ],
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const [hasMounted, setHasMounted] = useState(false);
+  const { userProfile: profile, isLoggedIn } = useAuthStore();
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
-    setHasMounted(true);
+    setIsClient(true);
   }, []);
-
-  const { profile } = useProfileStore();
-
-  if (!hasMounted) {
-    return <SidebarSkeleton {...props} />;
-  }
 
   const isSuperAdmin = profile?.m_user_profile_is_super;
   const navItems = isSuperAdmin ? data.navSuper : data.navAdmin;
 
   return (
-    <Sidebar collapsible="icon" {...props} className="relative shadow-md">
+    <Sidebar
+      collapsible="icon"
+      {...props}
+      variant="inset"
+      className="overflow-hidden"
+    >
       <SidebarHeader>
         <TeamSwitcher teams={data.teams} />
       </SidebarHeader>
       <Separator />
       <SidebarContent>
-        <NavMain items={navItems} />
+        {!isClient || !isLoggedIn ? (
+          <SidebarSkeleton />
+        ) : (
+          <NavMain items={navItems} />
+        )}
       </SidebarContent>
-      <SidebarFooter></SidebarFooter>
+      <SidebarFooter>
+        <NavUser />
+      </SidebarFooter>
     </Sidebar>
   );
 }

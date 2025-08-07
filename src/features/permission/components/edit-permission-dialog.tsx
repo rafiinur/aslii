@@ -29,7 +29,10 @@ export function EditPermissionDialog({
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogContent>
+      <DialogContent
+        className="sm:max-w-2xl max-h-[95vh] overflow-y-auto"
+        showCloseButton={false}
+      >
         <DialogHeader>
           <DialogTitle>Edit Permission</DialogTitle>
           <DialogDescription>

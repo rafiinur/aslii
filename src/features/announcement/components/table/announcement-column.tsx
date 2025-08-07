@@ -1,44 +1,78 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-
-import Link from "next/link";
 import { SortingButton } from "@/components/sorting-button";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Info, Pencil } from "lucide-react";
+import { Edit, Trash2 } from "lucide-react";
+import { ActionsCell } from "@/components/actions-cell";
+import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
+import EditAnnouncementDialog from "../dialog/edit-announcement-dialog";
 import type { Announcement } from "@/features/announcement/type";
+import ConfirmAnnouncementDeleteDialog from "../dialog/confirm-announcement-delete-dialog";
+import { formatDate } from "@/lib/utils";
 
-export const columns: ColumnDef<Announcement>[] = [
+export const announcementColumns: ColumnDef<Announcement>[] = [
   {
     accessorKey: "t_pengumuman_judul",
     header: ({ column }) => <SortingButton column={column} label="Judul" />,
+    size: 220,
+    cell: ({ row }) => (
+      <div
+        className="font-semibold truncate"
+        title={row.getValue("t_pengumuman_judul") as string}
+      >
+        {row.getValue("t_pengumuman_judul")}
+      </div>
+    ),
   },
   {
     accessorKey: "t_pengumuman_tanggal_publish",
-    header: ({ column }) => (
-      <SortingButton column={column} label="Tanggal Publish" />
-    ),
+    header: "Tanggal Publish",
+    size: 120,
+    cell: ({ row }) => {
+      const date = row.getValue<string>("t_pengumuman_tanggal_publish");
+      return (
+        <span className="whitespace-nowrap">
+          {date ? formatDate(date) : "-"}
+        </span>
+      );
+    },
   },
   {
     accessorKey: "t_pengumuman_tanggal_kedaluwarsa",
-    header: ({ column }) => (
-      <SortingButton column={column} label="Kadaluarsa" />
-    ),
+    header: "Kadaluarsa",
+    size: 120,
+    cell: ({ row }) => {
+      const date = row.getValue<string>("t_pengumuman_tanggal_kedaluwarsa");
+      return (
+        <span className="whitespace-nowrap">
+          {date ? formatDate(date) : "-"}
+        </span>
+      );
+    },
   },
   {
     accessorKey: "t_pengumuman_is_active",
-    header: ({ column }) => <SortingButton column={column} label="Status" />,
+    header: "Status",
+    size: 120,
     cell: ({ row }) => {
       const status = row.getValue<string>("t_pengumuman_is_active");
-      const variant =
-        status === "aktif"
-          ? "success"
-          : status === "nonaktif"
-          ? "destructive"
-          : "warning";
+      let variant: "success" | "destructive" | "warning" | "default" =
+        "warning";
+      let icon = null;
+      if (status === "aktif") {
+        variant = "success";
+        icon = <span className="mr-1.5">🟢</span>;
+      } else if (status === "nonaktif") {
+        variant = "destructive";
+        icon = <span className="mr-1.5">🔴</span>;
+      } else {
+        variant = "warning";
+        icon = <span className="mr-1.5">⚠️</span>;
+      }
       return (
-        <Badge variant={variant} className="capitalize">
+        <Badge variant={variant} className="capitalize flex items-center gap-1">
+          {icon}
           {status}
         </Badge>
       );
@@ -46,33 +80,60 @@ export const columns: ColumnDef<Announcement>[] = [
   },
   {
     accessorKey: "t_pengumuman_target_audience",
-    header: ({ column }) => <SortingButton column={column} label="Target" />,
-  },
-
-  {
-    id: "actions",
-    header: "Aksi",
+    header: "Target",
+    size: 120,
     cell: ({ row }) => {
-      const id = row.original.t_pengumuman_id;
+      const target = row.getValue<string>("t_pengumuman_target_audience");
+      let color: "default" | "secondary" | "destructive" | "outline" =
+        "default";
+      if (target === "Semua") color = "default";
+      else if (target === "Karyawan") color = "secondary";
+      else if (target === "Manajer") color = "outline";
+      else if (target === "Admin") color = "destructive";
       return (
-        <div className="flex items-center gap-2">
-          <Link href={`/announcements/${id}`}>
-            <Button
-              size={"icon"}
-              className="rounded-xs size-6 bg-secondary-100 text-secondary-600 hover:bg-secondary-300 hover:text-secondary-100"
-            >
-              <Info />
-            </Button>
-          </Link>
-          <Link href={`/announcements/edit/${id}`}>
-            <Button
-              size={"icon"}
-              className="rounded-xs size-6 bg-warning-200 text-warning-400 hover:bg-warning-400 hover:text-warning-200"
-            >
-              <Pencil />
-            </Button>
-          </Link>
-        </div>
+        <Badge variant={color} className="capitalize">
+          {target}
+        </Badge>
+      );
+    },
+  },
+  {
+    id: "aksi",
+    header: () => <div className="text-center">Aksi</div>,
+    cell: ({ row }) => {
+      const announcement = row.original;
+      return (
+        <ActionsCell
+          dialogs={[
+            {
+              key: "edit",
+              element: <EditAnnouncementDialog />,
+            },
+            {
+              key: "delete",
+              element: ConfirmAnnouncementDeleteDialog(
+                announcement.t_pengumuman_id,
+                announcement.t_pengumuman_judul
+              ),
+            },
+          ]}
+        >
+          {(openDialog) => (
+            <>
+              <DropdownMenuItem onSelect={() => openDialog("edit")}>
+                <Edit className="mr-2 h-4 w-4" />
+                <span>Edit Announcement</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onSelect={() => openDialog("delete")}
+                className="text-destructive focus:text-destructive"
+              >
+                <Trash2 className="mr-2 h-4 w-4 text-destructive" />
+                <span>Hapus Announcement</span>
+              </DropdownMenuItem>
+            </>
+          )}
+        </ActionsCell>
       );
     },
   },

@@ -9,8 +9,13 @@ export const moduleSchema = z.object({
   version: z.string().regex(/^\d+\.\d+\.\d+$/, {
     message: "Format versi harus X.X.X (contoh: 1.0.0)",
   }),
-  apiEndpoints: z.array(z.string()),
+  apiEndpoints: z.string(),
   isSystemModule: z.boolean(),
 });
 
 export type ModuleFormValues = z.infer<typeof moduleSchema>;
+
+// Tipe untuk hasil akhir setelah transform
+export type ProcessedModuleValues = Omit<ModuleFormValues, "apiEndpoints"> & {
+  apiEndpoints: string[];
+};

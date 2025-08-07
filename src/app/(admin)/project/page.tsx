@@ -26,8 +26,8 @@ const projectsSum = [
 
 const ProjectsPage = async () => {
   return (
-    <div className="flex flex-1 flex-col gap-4 py-4">
-      <div className="grid auto-rows-min gap-4 md:grid-cols-4">
+    <div className="flex flex-1 flex-col gap-4 px-6 pb-4">
+      <div className="grid gap-4 auto-rows-min grid-cols-1 md:grid-cols-4">
         {projectsSum.map((project) => (
           <SummarizeCard
             key={project.title}
@@ -36,14 +36,9 @@ const ProjectsPage = async () => {
           />
         ))}
       </div>
-      <div className="grid md:grid-cols-1 auto-rows-min">
-        <div className="flex flex-col">
-          <h4 className="font-semibold text-lg mb-2.5">List Proyek</h4>
-          <div className="flex-1">
-            <ProjectsTable />
-          </div>
-          x
-        </div>
+      <div className="flex flex-col overflow-auto">
+        <h4 className="section-title mb-2.5">List Proyek</h4>
+        <ProjectsTable />
       </div>
     </div>
   );

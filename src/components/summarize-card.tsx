@@ -1,6 +1,7 @@
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
+import { User } from "lucide-react";
 
 type SummarizeCardProps = {
   title: string;
@@ -18,16 +19,11 @@ const SummarizeCard: React.FC<SummarizeCardProps> = ({
   orientation = "vertical",
 }) => {
   return (
-    <Card
-      className={cn(
-        "shadow-md p-3 md:p-4 lg:p-5",
-        "min-h-[90px] flex flex-col justify-center",
-        className
-      )}
-    >
-      <CardHeader className="p-0 pb-1">
-        <CardTitle className="text-base md:text-lg font-semibold leading-tight truncate">
+    <Card className={cn("px-6", className)}>
+      <CardHeader className="p-0">
+        <CardTitle className="flex items-center gap-2 text-sm font-semibold truncate">
           {title}
+          <User className="size-4" />
         </CardTitle>
       </CardHeader>
       <CardContent className="p-0">
@@ -35,13 +31,11 @@ const SummarizeCard: React.FC<SummarizeCardProps> = ({
           className={cn(
             "flex w-full",
             orientation === "horizontal"
-              ? "flex-row items-end justify-between gap-2"
-              : "flex-col items-start gap-2"
+              ? "flex-row items-end justify-between gap-4"
+              : "flex-col justify-between gap-6"
           )}
         >
-          <h4 className="text-2xl md:text-3xl lg:text-4xl font-bold leading-none">
-            {amount}
-          </h4>
+          <h4 className="text-5xl font-semibold leading-none">{amount}</h4>
           {!!note && (
             <p className="font-medium text-xs md:text-sm text-muted-foreground whitespace-nowrap">
               {note}

@@ -1,9 +1,7 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown, Trash2, Edit } from "lucide-react";
-
-import { Button } from "@/components/ui/button";
+import { Trash2, Edit } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import type { Permission } from "../../type";
@@ -11,6 +9,7 @@ import { ActionsCell } from "@/components/actions-cell";
 
 import { ConfirmDeleteDialog } from "@/components/ui/confirm-delete-dialog";
 import { EditPermissionDialog } from "../edit-permission-dialog";
+import { SortingButton } from "@/components/sorting-button";
 
 export const permissionColumns: ColumnDef<Permission>[] = [
   {
@@ -27,16 +26,9 @@ export const permissionColumns: ColumnDef<Permission>[] = [
     },
   },
   {
-    accessorKey: "sys_permission_name",
+    accessorKey: "sys_permission_nama",
     header: ({ column }) => (
-      <Button
-        variant="ghost"
-        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        className="h-auto p-0 font-semibold"
-      >
-        Nama Permission
-        <ArrowUpDown className="ml-2 h-4 w-4" />
-      </Button>
+      <SortingButton column={column} label="Nama Permission" />
     ),
     size: 150,
     cell: ({ row }) => {

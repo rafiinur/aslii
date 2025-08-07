@@ -1,9 +1,7 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown, Edit, Trash2 } from "lucide-react";
-
-import { Button } from "@/components/ui/button";
+import { Edit, Trash2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { ActionsCell } from "@/components/actions-cell";
 import { EditRoleDialog } from "../edit-role-dialog";
@@ -11,6 +9,7 @@ import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { ConfirmDeleteDialog } from "@/components/ui/confirm-delete-dialog";
 
 import type { Role } from "../../types";
+import { SortingButton } from "@/components/sorting-button";
 
 export const roleColumns: ColumnDef<Role>[] = [
   {
@@ -27,16 +26,7 @@ export const roleColumns: ColumnDef<Role>[] = [
   },
   {
     accessorKey: "r_role_nama",
-    header: ({ column }) => (
-      <Button
-        variant="ghost"
-        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        className="h-auto p-0 font-semibold"
-      >
-        Nama Role
-        <ArrowUpDown className="ml-2 h-4 w-4" />
-      </Button>
-    ),
+    header: ({ column }) => <SortingButton column={column} label="Nama Role" />,
     size: 200,
     cell: ({ row }) => {
       const name = row.original.r_role_nama;

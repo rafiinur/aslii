@@ -91,7 +91,7 @@ const Page = () => {
   };
 
   return (
-    <div className="flex flex-col lg:flex-row gap-5 pb-10">
+    <div className="flex flex-col lg:flex-row gap-5 pb-10 px-6">
       <div
         className={`${
           selectedFile ? "lg:w-3/4" : "w-full"

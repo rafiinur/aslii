@@ -24,18 +24,13 @@ const NavBreadcrumbs = () => {
   return (
     <Breadcrumb>
       <BreadcrumbList>
-        <BreadcrumbItem>
-          <BreadcrumbLink asChild>
-            <Link href="/">Home</Link>
-          </BreadcrumbLink>
-        </BreadcrumbItem>
         {segments.map((segment, index) => {
           const path = `/${segments.slice(0, index + 1).join("/")}`;
           const isLast = index === segments.length - 1;
 
           return (
             <React.Fragment key={path}>
-              <BreadcrumbSeparator />
+              {index > 0 && <BreadcrumbSeparator>/</BreadcrumbSeparator>}
               <BreadcrumbItem>
                 {isLast ? (
                   <BreadcrumbPage>{capitalize(segment)}</BreadcrumbPage>

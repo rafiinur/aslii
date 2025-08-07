@@ -87,12 +87,12 @@ const formatDate = (date?: Date) => {
 const getStatusBadgeColor = (status: ApprovalRequest["overallStatus"]) => {
   switch (status) {
     case "Disetujui":
-      return "bg-green-100 text-green-800 hover:bg-green-100 border-green-300";
+      return "bg-green-100 text-green-800 hover:bg-green-100 border-green-300 dark:bg-green-900/20 dark:text-green-400 dark:border-green-600";
     case "Ditolak":
-      return "bg-red-100 text-red-800 hover:bg-red-100 border-red-300";
+      return "bg-red-100 text-red-800 hover:bg-red-100 border-red-300 dark:bg-red-900/20 dark:text-red-400 dark:border-red-600";
     case "Sedang Diproses":
     default:
-      return "bg-blue-100 text-blue-800 hover:bg-blue-100 border-blue-300";
+      return "bg-blue-100 text-blue-800 hover:bg-blue-100 border-blue-300 dark:bg-blue-900/20 dark:text-blue-400 dark:border-blue-600";
   }
 };
 
@@ -101,31 +101,31 @@ const getStepStatusInfo = (status: ApprovalStep["status"]) => {
     case "completed":
       return {
         icon: <Check className="w-6 h-6" />,
-        color: "text-green-700",
-        bgColor: "bg-green-50",
-        borderColor: "border-green-600",
+        color: "text-green-700 dark:text-green-400",
+        bgColor: "bg-green-50 dark:bg-green-900/20",
+        borderColor: "border-green-600 dark:border-green-500",
       };
     case "in_progress":
       return {
         icon: <Clock className="w-6 h-6 animate-pulse" />,
-        color: "text-blue-700",
-        bgColor: "bg-blue-50",
-        borderColor: "border-blue-600",
+        color: "text-blue-700 dark:text-blue-400",
+        bgColor: "bg-blue-50 dark:bg-blue-900/20",
+        borderColor: "border-blue-600 dark:border-blue-500",
       };
     case "rejected":
       return {
         icon: <XCircle className="w-6 h-6" />,
-        color: "text-red-700",
-        bgColor: "bg-red-50",
-        borderColor: "border-red-600",
+        color: "text-red-700 dark:text-red-400",
+        bgColor: "bg-red-50 dark:bg-red-900/20",
+        borderColor: "border-red-600 dark:border-red-500",
       };
     case "pending":
     default:
       return {
         icon: <Hourglass className="w-6 h-6" />,
-        color: "text-gray-500",
-        bgColor: "bg-gray-100",
-        borderColor: "border-gray-300",
+        color: "text-gray-500 dark:text-gray-400",
+        bgColor: "bg-gray-100 dark:bg-gray-800",
+        borderColor: "border-gray-300 dark:border-gray-600",
       };
   }
 };
@@ -141,7 +141,7 @@ export default function ApprovalStatusStepper({
   data?: ApprovalRequest;
 }) {
   return (
-    <div className="container mx-auto p-4 space-y-8">
+    <div className="px-6 py-4 space-y-8">
       {/* --- Stepper Navigasi Visual Horizontal --- */}
       <div className="flex items-start">
         {data.steps.map((step, index) => {
@@ -177,8 +177,8 @@ export default function ApprovalStatusStepper({
                     "h-1 flex-1 rounded-full transition-colors duration-500",
                     // Garis akan hijau jika langkah saat ini sudah selesai
                     step.status === "completed"
-                      ? "bg-green-600"
-                      : "bg-gray-200",
+                      ? "bg-green-600 dark:bg-green-500"
+                      : "bg-gray-200 dark:bg-gray-700",
                     // Posisikan garis di tengah secara vertikal
                     "mt-7"
                   )}
@@ -211,14 +211,18 @@ export default function ApprovalStatusStepper({
           </CardHeader>
           <CardContent className="text-sm space-y-2">
             <div className="flex">
-              <p className="w-32 text-gray-500 shrink-0">Pemohon</p>
-              <p className="font-medium text-gray-800">
+              <p className="w-32 text-gray-500 dark:text-gray-400 shrink-0">
+                Pemohon
+              </p>
+              <p className="font-medium text-gray-800 dark:text-gray-200">
                 : {data.applicantName}
               </p>
             </div>
             <div className="flex">
-              <p className="w-32 text-gray-500 shrink-0">Tanggal Pengajuan</p>
-              <p className="font-medium text-gray-800">
+              <p className="w-32 text-gray-500 dark:text-gray-400 shrink-0">
+                Tanggal Pengajuan
+              </p>
+              <p className="font-medium text-gray-800 dark:text-gray-200">
                 : {formatDate(data.submissionDate)}
               </p>
             </div>
@@ -237,9 +241,16 @@ export default function ApprovalStatusStepper({
           <CardContent>
             <div className="space-y-6">
               {data.steps.map((step, index) => (
-                <div key={step.id} className={cn(index > 0 && "pt-6 border-t")}>
+                <div
+                  key={step.id}
+                  className={cn(
+                    index > 0 && "pt-6 border-t dark:border-gray-700"
+                  )}
+                >
                   <div className="flex justify-between items-center mb-2">
-                    <h4 className="font-semibold">{step.name}</h4>
+                    <h4 className="font-semibold dark:text-gray-100">
+                      {step.name}
+                    </h4>
                     <Badge
                       variant="outline"
                       className={cn(
@@ -250,16 +261,20 @@ export default function ApprovalStatusStepper({
                       {getStatusText(step.status)}
                     </Badge>
                   </div>
-                  <div className="text-sm space-y-2 text-gray-700">
+                  <div className="text-sm space-y-2 text-gray-700 dark:text-gray-300">
                     {step.processedBy && (
                       <div className="flex">
-                        <p className="w-32 text-gray-500 shrink-0">Oleh</p>
+                        <p className="w-32 text-gray-500 dark:text-gray-400 shrink-0">
+                          Oleh
+                        </p>
                         <p className="font-medium">: {step.processedBy}</p>
                       </div>
                     )}
                     {step.processedAt && (
                       <div className="flex">
-                        <p className="w-32 text-gray-500 shrink-0">Pada</p>
+                        <p className="w-32 text-gray-500 dark:text-gray-400 shrink-0">
+                          Pada
+                        </p>
                         <p className="font-medium">
                           : {formatDate(step.processedAt)}
                         </p>
@@ -267,7 +282,9 @@ export default function ApprovalStatusStepper({
                     )}
                     {step.comments && (
                       <div className="flex items-start pt-2">
-                        <p className="w-32 text-gray-500 shrink-0">Komentar</p>
+                        <p className="w-32 text-gray-500 dark:text-gray-400 shrink-0">
+                          Komentar
+                        </p>
                         <p className="italic">: {step.comments}</p>
                       </div>
                     )}

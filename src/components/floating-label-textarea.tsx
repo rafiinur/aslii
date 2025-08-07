@@ -1,11 +1,9 @@
-// src/components/ui/floating-label-textarea.tsx
-
 "use client";
 
-import * as React from "react";
 import { cn } from "@/lib/utils";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { forwardRef, useEffect, useImperativeHandle, useRef } from "react";
 
 interface FloatingLabelTextareaProps
   extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
@@ -13,15 +11,15 @@ interface FloatingLabelTextareaProps
   id: string;
 }
 
-const FloatingLabelTextarea = React.forwardRef<
+const FloatingLabelTextarea = forwardRef<
   HTMLTextAreaElement,
   FloatingLabelTextareaProps
 >(({ className, label, id, value, ...props }, ref) => {
-  const internalRef = React.useRef<HTMLTextAreaElement>(null);
+  const internalRef = useRef<HTMLTextAreaElement>(null);
 
-  React.useImperativeHandle(ref, () => internalRef.current!);
+  useImperativeHandle(ref, () => internalRef.current!);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const textarea = internalRef.current;
     if (textarea) {
       textarea.style.height = "0px";

@@ -1,5 +1,3 @@
-// src/components/create-module-button.tsx
-
 "use client";
 
 import * as React from "react";

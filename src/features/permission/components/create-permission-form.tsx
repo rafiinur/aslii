@@ -1,8 +1,5 @@
-// src/components/create-permission-form.tsx
-
 "use client";
 
-import * as React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
@@ -26,13 +23,24 @@ import {
   PermissionFormValues,
   permissionSchema,
 } from "@/schemas/create-permission-schema";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import ModuleSelect from "./module-select";
+import { useState } from "react";
 
 interface CreatePermissionFormProps {
   onSuccess?: () => void;
 }
 
 export function CreatePermissionForm({ onSuccess }: CreatePermissionFormProps) {
-  const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const form = useForm<PermissionFormValues>({
     resolver: zodResolver(permissionSchema),
@@ -97,31 +105,46 @@ export function CreatePermissionForm({ onSuccess }: CreatePermissionFormProps) {
             )}
           />
 
-          <FormField
-            control={form.control}
-            name="module"
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <FloatingLabelInput id="module" label="Modul" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <div className="grid grid-cols-2 gap-6">
+            <FormField
+              control={form.control}
+              name="module"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Module</FormLabel>
+                  <FormControl>
+                    <ModuleSelect {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-          <FormField
-            control={form.control}
-            name="group"
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <FloatingLabelInput id="group" label="Grup" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+            <FormField
+              control={form.control}
+              name="group"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Group</FormLabel>
+                  <FormControl>
+                    <Select value={field.value} onValueChange={field.onChange}>
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Pilih Group" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectLabel>Permission Groups</SelectLabel>
+                          <SelectItem value="user">User</SelectItem>
+                          <SelectItem value="group">Group</SelectItem>
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
 
           <FormField
             control={form.control}
@@ -146,6 +169,14 @@ export function CreatePermissionForm({ onSuccess }: CreatePermissionFormProps) {
         </div>
 
         <div className="flex justify-end pt-4">
+          <Button
+            type="button"
+            variant="outline"
+            onClick={onSuccess}
+            className="mr-2"
+          >
+            Batal
+          </Button>
           <Button
             type="submit"
             disabled={isSubmitting}

@@ -4,12 +4,12 @@ import TopBar from "@/components/top-bar";
 
 export default function ProtectedLayout({ children }: React.PropsWithChildren) {
   return (
-    <SidebarProvider className="h-screen">
+    <SidebarProvider>
       <AppSidebar />
 
-      <SidebarInset className="flex flex-col h-full">
+      <SidebarInset>
         <TopBar />
-        <div className="flex-1 overflow-auto px-6 py-6">{children}</div>
+        {children}
       </SidebarInset>
     </SidebarProvider>
   );
