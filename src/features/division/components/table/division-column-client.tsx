@@ -24,7 +24,7 @@ export type DivisionCompany = {
 };
 
 export const divisionColumns: ColumnDef<DivisionCompany>[] = [
-  {    
+  {
     accessorKey: "id",
     header: "ID",
     cell: ({ row }) => <div className="font-mono">{row.getValue("id")}</div>,
@@ -80,49 +80,56 @@ export const divisionColumns: ColumnDef<DivisionCompany>[] = [
   {
     id: "aksi",
     header: () => <div className="text-right">Aksi</div>,
-    cell: ({ row }) => {
-      const mod = row.original;
-      const [showModal, setShowModal] = useState(false);      
-
-      return (
-        <div className="text-right">
-          {/* INTERACTIVE ACTIONS: A clean dropdown for row actions. */}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
-                <span className="sr-only">Buka menu</span>
-                <MoreHorizontal className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Aksi</DropdownMenuLabel>
-              <DropdownMenuItem
-                onClick={() => alert(`Melihat detail untuk: ${mod.name}`)}
-              >
-                Lihat Detail
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setShowModal(true)}>Edit Divisi</DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem className="text-red-600 focus:text-red-600">
-                Hapus Divisi
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-
-          {/* Modal */}
-          <EditDivisionModal
-            open={showModal}
-            onClose={() => setShowModal(false)}
-            division={mod}
-            // opsional data parent division nya dimasukin kesini
-            parentDivisions={[]} 
-            onSuccess={() => {
-              // Refresh data / toast bisa ditaruh di sini
-              console.log("Divisi berhasil diperbarui!");
-            }}
-          />
-        </div>
-      );
-    },
-  }
+    cell: ({ row }) => <DivisionActionsCell mod={row.original} />,
+  },
 ];
+
+type DivisionActionsCellProps = {
+  mod: DivisionCompany;
+};
+
+function DivisionActionsCell({ mod }: DivisionActionsCellProps) {
+  const [showModal, setShowModal] = useState(false);
+
+  return (
+    <div className="text-right">
+      {/* INTERACTIVE ACTIONS: A clean dropdown for row actions. */}
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" className="h-8 w-8 p-0">
+            <span className="sr-only">Buka menu</span>
+            <MoreHorizontal className="h-4 w-4" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuLabel>Aksi</DropdownMenuLabel>
+          <DropdownMenuItem
+            onClick={() => alert(`Melihat detail untuk: ${mod.name}`)}
+          >
+            Lihat Detail
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => setShowModal(true)}>
+            Edit Divisi
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem className="text-red-600 focus:text-red-600">
+            Hapus Divisi
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+
+      {/* Modal */}
+      <EditDivisionModal
+        open={showModal}
+        onClose={() => setShowModal(false)}
+        division={mod}
+        // opsional data parent division nya dimasukin kesini
+        parentDivisions={[]}
+        onSuccess={() => {
+          // Refresh data / toast bisa ditaruh di sini
+          console.log("Divisi berhasil diperbarui!");
+        }}
+      />
+    </div>
+  );
+}

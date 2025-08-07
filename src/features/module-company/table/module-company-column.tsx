@@ -1,26 +1,21 @@
 "use client";
 
-import { useState } from "react";
 import { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal, ArrowUpDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ModuleDetailDialog } from "@/features/module-company/components/module-detail-dialog";
 
 export type ModuleCompany = {
   name: string;
   code: string;
-  version: string; 
+  version: string;
 };
-
 
 export type ModuleType = {
   id: string;
@@ -65,7 +60,9 @@ export const moduleCompanyColumns: ColumnDef<ModuleCompany>[] = [
   {
     accessorKey: "version",
     header: "Versi",
-    cell: ({ row }) => <div className="font-mono">{row.getValue("version")}</div>,
+    cell: ({ row }) => (
+      <div className="font-mono">{row.getValue("version")}</div>
+    ),
   },
   {
     accessorKey: "description",
@@ -73,21 +70,20 @@ export const moduleCompanyColumns: ColumnDef<ModuleCompany>[] = [
     cell: ({ row }) => {
       const fullText = row.getValue("description") as string;
       const maxLength = 42;
-      const truncated = fullText.length > maxLength
-        ? `${fullText.slice(0, maxLength)}..`
-        : fullText;
+      const truncated =
+        fullText.length > maxLength
+          ? `${fullText.slice(0, maxLength)}..`
+          : fullText;
 
       return <div className="font-mono">{truncated}</div>;
     },
   },
-  
+
   {
     id: "aksi",
     header: () => <div className="text-right">Aksi</div>,
     cell: ({ row }) => {
       const data = row.original;
-      const [openDetail, setOpenDetail] = useState(false);
-      const [selectedModule, setSelectedModule] = useState<ModuleType | null>(null);
 
       return (
         <div className="text-right">

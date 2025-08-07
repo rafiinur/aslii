@@ -1,9 +1,6 @@
-import { getAllRoleCompany } from "@/features/role_company/services/role-company.service";
 import RoleCompanyTableClient from "@/features/role_company/components/table/role-company-table-client";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import { CreateRoleCompanyButton } from "@/features/role_company/components/create-role-company-button";
 
+import { CreateRoleCompanyButton } from "@/features/role_company/components/create-role-company-button";
 
 const RoleCompanyPage = async () => {
   // const data = await getAllRoleCompany(); // Tidak perlu jika fetch di client

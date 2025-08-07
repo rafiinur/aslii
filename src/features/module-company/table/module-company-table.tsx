@@ -3,9 +3,6 @@ import { moduleCompanyColumns } from "./module-company-column";
 import { DataTable } from "@/components/data-table";
 import type { ModuleCompany } from "./module-company-column";
 
-import { ModuleDetailDialog } from "@/features/module-company/components/module-detail-dialog";
-
-
 type ModuleCompanyTableProps = {
   allModuleCompanies: ModuleCompany[];
   companyModules: ModuleCompany[];

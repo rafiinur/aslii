@@ -11,7 +11,6 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -22,7 +21,13 @@ import { toast } from "sonner";
 import { FloatingLabelInput } from "@/components/floating-label-input";
 import { FloatingLabelTextarea } from "@/components/floating-label-textarea";
 import { DivisionFormValues, divisionSchema } from "@/schemas/division-schema";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface EditDivisionFormProps {
   initialData: DivisionFormValues;
@@ -67,7 +72,11 @@ export function EditDivisionForm({
               <FormItem>
                 <FormLabel>Nama Divisi</FormLabel>
                 <FormControl>
-                  <FloatingLabelInput id="name" label="Nama Divisi" {...field} />
+                  <FloatingLabelInput
+                    id="name"
+                    label="Nama Divisi"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -81,7 +90,11 @@ export function EditDivisionForm({
               <FormItem>
                 <FormLabel>Kode Divisi</FormLabel>
                 <FormControl>
-                  <FloatingLabelInput id="code" label="Kode Divisi" {...field} />
+                  <FloatingLabelInput
+                    id="code"
+                    label="Kode Divisi"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -95,7 +108,11 @@ export function EditDivisionForm({
               <FormItem>
                 <FormLabel>Deskripsi</FormLabel>
                 <FormControl>
-                  <FloatingLabelTextarea id="description" label="Deskripsi" {...field} />
+                  <FloatingLabelTextarea
+                    id="description"
+                    label="Deskripsi"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -109,7 +126,10 @@ export function EditDivisionForm({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Divisi Induk</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Pilih divisi induk (jika ada)" />
@@ -117,7 +137,9 @@ export function EditDivisionForm({
                     </FormControl>
                     <SelectContent>
                       {parentDivisions.map((div) => (
-                        <SelectItem key={div.id} value={div.id}>{div.name}</SelectItem>
+                        <SelectItem key={div.id} value={div.id}>
+                          {div.name}
+                        </SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
@@ -129,7 +151,11 @@ export function EditDivisionForm({
         </div>
 
         <div className="flex justify-end pt-4">
-          <Button type="submit" disabled={isSubmitting} className="w-full sm:w-auto">
+          <Button
+            type="submit"
+            disabled={isSubmitting}
+            className="w-full sm:w-auto"
+          >
             {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             {isSubmitting ? "Menyimpan..." : "Perbarui Divisi"}
           </Button>

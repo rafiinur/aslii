@@ -92,7 +92,7 @@ export default function DndBoardProvider({
     }
 
     setColumns((prev) => {
-      const activeItems = activeColumn.items;
+      // const activeItems = activeColumn.items;
       const overItems = overColumn.items;
       const overIndex =
         over.data.current?.type === "Column"

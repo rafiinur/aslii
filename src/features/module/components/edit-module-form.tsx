@@ -1,12 +1,12 @@
 import React from "react";
-import type { Module } from "../types";
+// import type { Module } from "../types";
 
-interface EditModuleFormProps {
-  module: Module;
-  onSuccess?: () => void;
-}
+// interface EditModuleFormProps {
+//   module: Module;
+//   onSuccess?: () => void;
+// }
 
-const EditModuleForm = ({ module, onSuccess }: EditModuleFormProps) => {
+const EditModuleForm = () => {
   return <div>EditModuleForm</div>;
 };
 

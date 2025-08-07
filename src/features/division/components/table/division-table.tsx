@@ -2,7 +2,6 @@
 
 import { DataTable } from "@/components/data-table";
 import { divisionColumns } from "./division-columns";
-import { useDivisions } from "../../hooks/use-divisions";
 
 const DivisionTable = () => {
   //   const { data, isLoading, error } = useDivisions();

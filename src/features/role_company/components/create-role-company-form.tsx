@@ -5,19 +5,10 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "sonner";
-import {
-  Form,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormControl,
-  
-} from "@/components/ui/form";
+import { Form, FormField, FormItem, FormControl } from "@/components/ui/form";
 
 import { FloatingLabelInput } from "@/components/floating-label-input";
 import { FloatingLabelTextarea } from "@/components/floating-label-textarea";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 
 type CreateRoleCompanyFormProps = {
   onSuccess?: () => void;
@@ -34,7 +25,9 @@ const SYSTEM_ROLES = [
   { id: 4, name: "Superuser", description: "Role sistem", is_system: true },
 ];
 
-export default function CreateRoleCompanyForm({ onSuccess }: CreateRoleCompanyFormProps) {
+export default function CreateRoleCompanyForm({
+  onSuccess,
+}: CreateRoleCompanyFormProps) {
   const [tab, setTab] = useState("new");
   const [selected, setSelected] = useState<number[]>([]);
 
@@ -47,7 +40,7 @@ export default function CreateRoleCompanyForm({ onSuccess }: CreateRoleCompanyFo
   });
 
   // Handler tambah role baru
-  const handleSubmitNew = (values: FormValues) => {
+  const handleSubmitNew = () => {
     toast.success("Role baru berhasil ditambahkan!");
     form.reset();
     if (onSuccess) onSuccess();
@@ -69,14 +62,21 @@ export default function CreateRoleCompanyForm({ onSuccess }: CreateRoleCompanyFo
       </TabsList>
       <TabsContent value="new">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(handleSubmitNew)} className="space-y-4">
+          <form
+            onSubmit={form.handleSubmit(handleSubmitNew)}
+            className="space-y-4"
+          >
             <FormField
               control={form.control}
               name="name"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <FloatingLabelInput id="name" label="Nama Role" {...field} />
+                    <FloatingLabelInput
+                      id="name"
+                      label="Nama Role"
+                      {...field}
+                    />
                   </FormControl>
                 </FormItem>
               )}
@@ -88,10 +88,10 @@ export default function CreateRoleCompanyForm({ onSuccess }: CreateRoleCompanyFo
                 <FormItem>
                   <FormControl>
                     <FloatingLabelTextarea
-                    id="description"
-                    label="Deskripsi"
-                    {...field}
-                  />
+                      id="description"
+                      label="Deskripsi"
+                      {...field}
+                    />
                   </FormControl>
                 </FormItem>
               )}
@@ -116,7 +116,9 @@ export default function CreateRoleCompanyForm({ onSuccess }: CreateRoleCompanyFo
                   }
                 />
                 <span className="font-medium">{role.name}</span>
-                <span className="text-xs text-muted-foreground">{role.description}</span>
+                <span className="text-xs text-muted-foreground">
+                  {role.description}
+                </span>
               </label>
             ))}
           </div>

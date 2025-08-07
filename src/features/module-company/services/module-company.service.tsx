@@ -1,11 +1,37 @@
-import { version } from "os";
-
 // Dummy data
 const AllModuleCompany = [
-  { id: 1, name: "Manajemen Autentikasi",  code: "AUTH_MANAGEMENT", description: "Modul untuk mengelola autentikasi pengguna, sesi, profil, dan keamanan akun termasuk 2FA", version: "1.0.0" },
-  { id: 2, name: "Manajemen Kehadiran", code: "ATTEDANCE_MANAGEMENT", description: "Modul untuk mengelola autentikasi pengguna, sesi, profil, dan keamanan akun termasuk 2FA", version: "1.0.0" },
-  { id: 3, name: "Manajemen Proyek", code: "PROJECT_MANAGEMENT", description: "Modul untuk mengelola autentikasi pengguna, sesi, profil, dan keamanan akun termasuk 2FA", version: "1.0.0" },
-  { id: 4, name: "Manajemen Tugas", code: "TASK_MANAGEMENT", description: "Modul untuk mengelola autentikasi pengguna, sesi, profil, dan keamanan akun termasuk 2FA", version: "1.0.0" },
+  {
+    id: 1,
+    name: "Manajemen Autentikasi",
+    code: "AUTH_MANAGEMENT",
+    description:
+      "Modul untuk mengelola autentikasi pengguna, sesi, profil, dan keamanan akun termasuk 2FA",
+    version: "1.0.0",
+  },
+  {
+    id: 2,
+    name: "Manajemen Kehadiran",
+    code: "ATTEDANCE_MANAGEMENT",
+    description:
+      "Modul untuk mengelola autentikasi pengguna, sesi, profil, dan keamanan akun termasuk 2FA",
+    version: "1.0.0",
+  },
+  {
+    id: 3,
+    name: "Manajemen Proyek",
+    code: "PROJECT_MANAGEMENT",
+    description:
+      "Modul untuk mengelola autentikasi pengguna, sesi, profil, dan keamanan akun termasuk 2FA",
+    version: "1.0.0",
+  },
+  {
+    id: 4,
+    name: "Manajemen Tugas",
+    code: "TASK_MANAGEMENT",
+    description:
+      "Modul untuk mengelola autentikasi pengguna, sesi, profil, dan keamanan akun termasuk 2FA",
+    version: "1.0.0",
+  },
 ];
 
 // Simulasi divisi yang dipakai perusahaan
