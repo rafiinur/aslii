@@ -18,13 +18,17 @@ export const login = async (email: string, password: string) => {
     );
 
     const result = await res.json();
+    const result = await res.json();
 
     if (!res.ok) {
       throw new Error(result?.message || "Login gagal.");
+      throw new Error(result?.message || "Login gagal.");
     }
 
-    const accessToken = result?.data?.user?.auth?.access_token;
-    const refreshToken = result?.data?.user?.auth?.refresh_token;
+    console.log("Login berhasil:", result);
+
+    const accessToken = result?.result?.data?.user?.auth?.access_token;
+    const refreshToken = result?.result?.data?.user?.auth?.refresh_token;
 
     if (!accessToken || !refreshToken) {
       throw new Error("Token tidak valid.");
